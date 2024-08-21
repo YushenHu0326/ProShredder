@@ -6,8 +6,10 @@ public class AudioManager : MonoBehaviour
 {
     private AudioSource audioSource;
 
-    public void StartPlaying(int deviceID)
+    public bool StartPlaying(int deviceID)
     {
+        if (deviceID < 0) return false;
+
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -25,6 +27,19 @@ public class AudioManager : MonoBehaviour
 
             while (!(Microphone.GetPosition(Microphone.devices[deviceID]) > 0)) { }
             audioSource.Play();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void StopPlaying()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource != null)
+        {
+            audioSource.Stop();
         }
     }
 }

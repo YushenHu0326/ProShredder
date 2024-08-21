@@ -29,4 +29,17 @@ public class AudioDeviceDropdown : MonoBehaviour
             }
         }
     }
+
+    public int GetDeviceID()
+    {
+        if (dropdown != null)
+        {
+            if (dropdown.value > 0 && dropdown.value <= Microphone.devices.Length)
+            {
+                return dropdown.value - 1;
+            }
+        }
+
+        return -1;
+    }
 }
