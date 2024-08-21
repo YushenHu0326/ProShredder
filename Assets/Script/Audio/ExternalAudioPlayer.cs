@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class ExternalAudioPlayer : MonoBehaviour
 {
@@ -47,11 +48,26 @@ public class ExternalAudioPlayer : MonoBehaviour
     {
         isLoading = true;
 
-        WWW url = new WWW(audioFilePath);
-        yield return url;
+        AudioType type = AudioType.WAV;
+        if (audioFilePath.Substring(audioFilePath.Length - 3).Equals("mp3"))
+        {
+            type = AudioType.MPEG;
+        }
+        else if (audioFilePath.Substring(audioFilePath.Length - 3).Equals("ogg"))
+        {
+            type = AudioType.OGGVORBIS;
+        }
+        else if (audioFilePath.Substring(audioFilePath.Length - 3).Equals("aif"))
+        {
+            type = AudioType.AIFF;
+        }
+
+        UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip("file:///" + audioFilePath, type);
+        yield return req.SendWebRequest();
+        AudioClip clip = DownloadHandlerAudioClip.GetContent(req);
 
         isLoading = false;
 
-        audioSource.clip = url.GetAudioClip(false, true);
+        audioSource.clip = clip;
     }
 }
