@@ -6,7 +6,7 @@ public class AudioManager : MonoBehaviour
 {
     private AudioSource audioSource;
 
-    void StartPlaying(int deviceID)
+    public void StartPlaying(int deviceID)
     {
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)

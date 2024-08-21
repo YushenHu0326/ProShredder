@@ -30,4 +30,18 @@ public class VideoDeviceDropdown : MonoBehaviour
             }
         }
     }
+
+    public string GetDeviceName()
+    {
+        if (dropdown != null)
+        {
+            WebCamDevice[] devices = WebCamTexture.devices;
+            if (dropdown.value > 0 && dropdown.value <= devices.Length)
+            {
+                return devices[dropdown.value - 1].name;
+            }
+        }
+
+        return "";
+    }
 }
