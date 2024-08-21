@@ -15,7 +15,7 @@ public class WebCamFeed : MonoBehaviour
         RawImage image = gameObject.GetComponent<RawImage>();
         if (image != null)
         {
-            tex = new WebCamTexture(webCamName, 320, 240, 30);
+            tex = new WebCamTexture(webCamName, 700, 400, 30);
             image.texture = tex;
             tex.Play();
             return true;
