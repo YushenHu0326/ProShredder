@@ -39,9 +39,19 @@ public class ExternalAudioPlayer : MonoBehaviour
         }
     }
 
+    public void PauseAudio()
+    {
+        audioSource.Pause();
+    }
+
     public void StopAudio()
     {
         audioSource.Stop();
+    }
+
+    public void ChangeVolume(float volume)
+    {
+        audioSource.volume = volume;
     }
 
     private IEnumerator LoadAudioIEnum()

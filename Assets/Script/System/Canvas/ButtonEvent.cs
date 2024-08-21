@@ -10,7 +10,20 @@ public class ButtonEvent : MonoBehaviour
 
     public WebCamFeed webCamFeed;
 
+    public GameObject buttons;
+
     bool audioIsPlaying, videoIsPlaying;
+
+    void Start()
+    {
+        Image[] images = GetComponentsInChildren<Image>();
+        foreach (Image image in images)
+        {
+            Color c = image.color;
+            c.a = 0.5f;
+            image.color = c;
+        }
+    }
 
     public void PlayStopAudio()
     {
