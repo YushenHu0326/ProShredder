@@ -16,6 +16,12 @@ public class ExternalAudioPlayer : MonoBehaviour
 
     public float currentTime;
 
+
+    public int bpm;
+    public int countIn;
+
+    public AudioSource countInAudio;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,17 +53,28 @@ public class ExternalAudioPlayer : MonoBehaviour
         }
         else if (audioSource.clip != null && !isLoading)
         {
-            if (!audioSource.isPlaying)
-            {
-                if (autoTruncate)
-                {
-                    startTime = truncateTime;
-                }
-
-                audioSource.time = startTime;
-            }
-            audioSource.Play();
+            StartCoroutine(PlayAudioIEnum());
         }
+    }
+
+    IEnumerator PlayAudioIEnum()
+    {
+        for (int i = 0; i < countIn; i++)
+        {
+            if (countInAudio != null)
+            {
+                countInAudio.PlayOneShot(countInAudio.clip, 1f);
+            }
+            yield return new WaitForSeconds(60f / (float)bpm);
+        }
+
+        if (autoTruncate)
+        {
+            startTime = truncateTime;
+        }
+
+        audioSource.time = startTime;
+        audioSource.Play();
     }
 
     public void PauseAudio()

@@ -11,6 +11,8 @@ public class ExternalAudioPlayerUI : MonoBehaviour, IDragHandler, IDropHandler, 
     public GameObject audioRegion;
     public GameObject audioSlider;
 
+    public Dropdown countIn;
+
     private bool isDraggingSlider;
 
     // Start is called before the first frame update
@@ -20,6 +22,13 @@ public class ExternalAudioPlayerUI : MonoBehaviour, IDragHandler, IDropHandler, 
         if (players.Length > 0)
         {
             player = players[0];
+        }
+
+        if (countIn != null)
+        {
+            List<string> options = new List<string> { "No Count In", "1/4", "2/4", "3/4", "4/4" };
+            countIn.ClearOptions();
+            countIn.AddOptions(options);
         }
     }
 
@@ -80,6 +89,24 @@ public class ExternalAudioPlayerUI : MonoBehaviour, IDragHandler, IDropHandler, 
         if (player != null)
         {
             player.autoTruncate = autoTruncate;
+        }
+    }
+
+    public void SetBPM(string input)
+    {
+        int bpm;
+        bool parsed = int.TryParse(input, out bpm);
+        if (parsed && player != null)
+        {
+            player.bpm = bpm;
+        }
+    }
+
+    public void SetCountIn()
+    {
+        if (player != null && countIn != null)
+        {
+            player.countIn = countIn.value;
         }
     }
 
