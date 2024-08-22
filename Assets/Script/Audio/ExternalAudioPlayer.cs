@@ -43,7 +43,7 @@ public class ExternalAudioPlayer : MonoBehaviour
         {
             isPaused = false;
             audioSource.time = currentTime;
-            audioSource.UnPause();
+            audioSource.Play();
         }
         else if (audioSource.clip != null && !isLoading)
         {
