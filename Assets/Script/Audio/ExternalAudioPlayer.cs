@@ -54,6 +54,16 @@ public class ExternalAudioPlayer : MonoBehaviour
         audioSource.volume = volume;
     }
 
+    public float GetAudioPosition()
+    {
+        if (audioSource.clip != null)
+        {
+            return audioSource.time / (audioSource.clip.length - startTime);
+        }
+
+        return 0f;
+    }
+
     private IEnumerator LoadAudioIEnum()
     {
         isLoading = true;
