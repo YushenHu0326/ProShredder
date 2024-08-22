@@ -75,6 +75,14 @@ public class ExternalAudioPlayerUI : MonoBehaviour, IDragHandler, IDropHandler, 
         }
     }
 
+    public void AutoTruncate(bool autoTruncate)
+    {
+        if (player != null)
+        {
+            player.autoTruncate = autoTruncate;
+        }
+    }
+
     public void OnDrag(PointerEventData pointerEventData)
     {
         if (audioRegion != null && audioSlider != null)
@@ -93,6 +101,21 @@ public class ExternalAudioPlayerUI : MonoBehaviour, IDragHandler, IDropHandler, 
                     Vector2 pos = sliderTransform.anchoredPosition;
                     pos.x = mousePos.x + regionTransform.rect.width / 2f;
                     sliderTransform.anchoredPosition = pos;
+                }
+            }
+            else
+            {
+                if (isDraggingSlider)
+                {
+                    RectTransform sliderTransform = audioSlider.GetComponent<RectTransform>();
+
+                    isDraggingSlider = false;
+
+                    if (player != null)
+                    {
+                        player.SetAudioPosition(sliderTransform.anchoredPosition.x / regionTransform.rect.width);
+                        PlayAudio();
+                    }
                 }
             }
         }

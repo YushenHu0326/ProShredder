@@ -6,6 +6,8 @@ using UnityEngine.Networking;
 public class ExternalAudioPlayer : MonoBehaviour
 {
     public float startTime;
+    public float truncateTime;
+    public bool autoTruncate;
     public string audioFilePath;
 
     private AudioSource audioSource;
@@ -43,14 +45,13 @@ public class ExternalAudioPlayer : MonoBehaviour
             audioSource.time = currentTime;
             audioSource.UnPause();
         }
-
-        if (audioSource.clip != null && !isLoading)
+        else if (audioSource.clip != null && !isLoading)
         {
             if (!audioSource.isPlaying)
             {
-                if (currentTime > startTime)
+                if (autoTruncate)
                 {
-                    startTime = currentTime;
+                    startTime = truncateTime;
                 }
 
                 audioSource.time = startTime;
@@ -119,5 +120,22 @@ public class ExternalAudioPlayer : MonoBehaviour
         isLoading = false;
 
         audioSource.clip = clip;
+
+        float[] samples = new float[audioSource.clip.samples * audioSource.clip.channels];
+        audioSource.clip.GetData(samples, 0);
+
+
+        int startIndex = 0;
+
+        for (int i = 0; i < samples.Length; i++)
+        {
+            if (samples[i] > 0.0001)
+            {
+                startIndex = i;
+                break;
+            }
+        }
+
+        truncateTime = audioSource.clip.length * ((float)startIndex / (float)samples.Length);
     }
 }
