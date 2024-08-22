@@ -10,6 +10,9 @@ public class ExternalAudioPlayer : MonoBehaviour
 
     private AudioSource audioSource;
     private bool isLoading;
+    private bool isPaused;
+
+    public float currentTime;
 
     // Start is called before the first frame update
     void Start()
@@ -32,9 +35,26 @@ public class ExternalAudioPlayer : MonoBehaviour
 
     public void PlayAudio()
     {
+        if (audioSource.isPlaying) return;
+
+        if (isPaused)
+        {
+            isPaused = false;
+            audioSource.time = currentTime;
+            audioSource.UnPause();
+        }
+
         if (audioSource.clip != null && !isLoading)
         {
-            audioSource.time = startTime;
+            if (!audioSource.isPlaying)
+            {
+                if (currentTime > startTime)
+                {
+                    startTime = currentTime;
+                }
+
+                audioSource.time = startTime;
+            }
             audioSource.Play();
         }
     }
@@ -42,6 +62,8 @@ public class ExternalAudioPlayer : MonoBehaviour
     public void PauseAudio()
     {
         audioSource.Pause();
+        isPaused = true;
+        currentTime = audioSource.time;
     }
 
     public void StopAudio()
@@ -62,6 +84,14 @@ public class ExternalAudioPlayer : MonoBehaviour
         }
 
         return 0f;
+    }
+
+    public void SetAudioPosition(float pos)
+    {
+        if (audioSource.clip != null)
+        {
+            currentTime = pos * (audioSource.clip.length - startTime);
+        }
     }
 
     private IEnumerator LoadAudioIEnum()
