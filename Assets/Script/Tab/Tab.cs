@@ -41,6 +41,11 @@ public class Tab : MonoBehaviour
         }
     }
 
+    public Section GetSection(int sectionIndex)
+    {
+        return sections[sectionIndex];
+    }
+
     public int GetSectionTotal()
     {
         return sections.Count;

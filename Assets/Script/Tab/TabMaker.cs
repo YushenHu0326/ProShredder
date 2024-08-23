@@ -11,6 +11,12 @@ public class TabMaker : MonoBehaviour
     public GameObject previousSection;
     public GameObject nextSection;
 
+    public GameObject mainSectionTransform;
+    public GameObject previousSectionTransform;
+    public GameObject nextSectionTransform;
+
+    Section section;
+
     int sectionIndex;
     int subsection;
     int position;
@@ -20,6 +26,9 @@ public class TabMaker : MonoBehaviour
     int totalString;
 
     float sectionLength;
+
+    public Image pointer;
+    RectTransform pointerRect;
 
     void Start()
     {
@@ -32,6 +41,29 @@ public class TabMaker : MonoBehaviour
         {
             RectTransform rect = mainSection.GetComponent<RectTransform>();
             sectionLength = rect.sizeDelta.x;
+        }
+
+        if (pointer && mainSectionTransform)
+        {
+            pointer.transform.SetParent(mainSectionTransform.transform);
+            pointerRect = pointer.GetComponent<RectTransform>();
+            if (pointerRect)
+            {
+                pointerRect.anchoredPosition = new Vector2();
+            }
+        }
+    }
+
+    void Update()
+    {
+        if (pointerRect && tab)
+        {
+            section = tab.GetSection(sectionIndex);
+            Vector2 pos = new Vector2();
+            pos.x = ((sectionLength - 10f) / (float)section.division) * (float)(position - 1);
+            pos.y = -10f * (stringNum - 1);
+
+            pointerRect.anchoredPosition = pos;
         }
     }
 
