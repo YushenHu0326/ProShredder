@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class ExternalAudioPlayerUI : MonoBehaviour, IDragHandler, IDropHandler, IPointerClickHandler
 {
     ExternalAudioPlayer player;
+    public AudioMixer mixer;
 
     public GameObject audioRegion;
     public GameObject audioSlider;
 
     public Dropdown countIn;
+
+    public Text tuneIndicator;
+    private int tune;
 
     private bool isDraggingSlider;
 
@@ -48,6 +53,29 @@ public class ExternalAudioPlayerUI : MonoBehaviour, IDragHandler, IDropHandler, 
                     pos.x = player.GetAudioPosition() * width;
                     sliderTransform.anchoredPosition = pos;
                 }
+            }
+        }
+
+        if (tuneIndicator != null)
+        {
+            if (tune == 0)
+            {
+                tuneIndicator.text = "Original Tune";
+            }
+            else
+            {
+                string text = Mathf.Abs(tune).ToString();
+                text += " Steps ";
+                if (tune > 0)
+                {
+                    text += "Up";
+                }
+                else
+                {
+                    text += "Down";
+                }
+
+                tuneIndicator.text = text;
             }
         }
     }
@@ -107,6 +135,24 @@ public class ExternalAudioPlayerUI : MonoBehaviour, IDragHandler, IDropHandler, 
         if (player != null && countIn != null)
         {
             player.countIn = countIn.value;
+        }
+    }
+
+    public void TuneDown()
+    {
+        tune = tune - 1;
+        if (mixer != null)
+        {
+            mixer.SetFloat("ExternalAudioPitch", Mathf.Pow(1.059f, tune));
+        }
+    }
+
+    public void TuneUp()
+    {
+        tune = tune + 1;
+        if (mixer != null)
+        {
+            mixer.SetFloat("ExternalAudioPitch", Mathf.Pow(1.059f, tune));
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.EventSystems;
 
 public class SourceAudioDropdown : MonoBehaviour
 {
@@ -12,6 +13,16 @@ public class SourceAudioDropdown : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
+    {
+        GetSourceAudios();
+    }
+
+    public void OnPointerClick(PointerEventData pointerEventData)
+    {
+        GetSourceAudios();
+    }
+
+    void GetSourceAudios()
     {
         dropdown = GetComponent<Dropdown>();
         options = new List<string> { "No File Selected" };

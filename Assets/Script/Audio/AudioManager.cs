@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     private AudioSource audioSource;
+
+    public AudioMixerGroup guitarMixer;
 
     public bool StartPlaying(int deviceID)
     {
@@ -16,13 +19,15 @@ public class AudioManager : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
+        audioSource.outputAudioMixerGroup = guitarMixer;
+
         if (Microphone.devices.Length > deviceID)
         {
             int minFreq, maxFreq, freq;
             Microphone.GetDeviceCaps(Microphone.devices[deviceID], out minFreq, out maxFreq);
             freq = Mathf.Min(44100, maxFreq);
 
-            audioSource.clip = Microphone.Start(Microphone.devices[deviceID], true, 10, freq);
+            audioSource.clip = Microphone.Start(Microphone.devices[deviceID], true, 1, freq);
             audioSource.loop = true;
 
             while (!(Microphone.GetPosition(Microphone.devices[deviceID]) > 0)) { }

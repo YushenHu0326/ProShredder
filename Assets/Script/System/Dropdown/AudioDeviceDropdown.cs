@@ -2,14 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class AudioDeviceDropdown : MonoBehaviour
+public class AudioDeviceDropdown : MonoBehaviour, IPointerClickHandler
 {
     Dropdown dropdown;
     List<string> options;
 
     // Start is called before the first frame update
+
     void Start()
+    {
+        GetAudioDevices();
+    }
+
+    public void OnPointerClick(PointerEventData pointerEventData)
+    {
+        GetAudioDevices();
+    }
+
+    void GetAudioDevices()
     {
         dropdown = GetComponent<Dropdown>();
         options = new List<string> { "No Audio Input" };

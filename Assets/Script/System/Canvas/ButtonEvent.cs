@@ -20,7 +20,7 @@ public class ButtonEvent : MonoBehaviour
         foreach (Image image in images)
         {
             Color c = image.color;
-            c.a = 0.5f;
+            c.a = 0.75f;
             image.color = c;
         }
     }

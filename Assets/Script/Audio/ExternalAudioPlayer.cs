@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Audio;
 
 public class ExternalAudioPlayer : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class ExternalAudioPlayer : MonoBehaviour
 
     public AudioSource countInAudio;
 
+    public AudioMixerGroup mixer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,8 +32,10 @@ public class ExternalAudioPlayer : MonoBehaviour
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.loop = false;
         }
+
+        audioSource.loop = false;
+        audioSource.outputAudioMixerGroup = mixer;
     }
 
     public void LoadAudio()
