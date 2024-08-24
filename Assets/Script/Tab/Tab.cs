@@ -53,6 +53,14 @@ public class Tab : MonoBehaviour
         }
     }
 
+    public void SetNotePH(int position, int stringNum, int fretNum, int sectionIndex)
+    {
+        if (sections.Count > sectionIndex)
+        {
+            sections[sectionIndex].SetNotePH(position, stringNum, fretNum);
+        }
+    }
+
     public void CycleSection(int sectionIndex)
     {
         if (sectionIndex == 0)

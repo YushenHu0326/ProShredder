@@ -93,4 +93,28 @@ public class Section : MonoBehaviour
             }
         }
     }
+
+    public void SetNotePH(int position, int stringNum, int fretNum)
+    {
+        int index = -1;
+
+        for (int i = 0; i < notes.Count; i++)
+        {
+            if (position == notes[i].position && stringNum == notes[i].stringNum)
+            {
+                index = i;
+            }
+        }
+
+        if (index >= 0)
+        {
+            NoteStruct noteStruct = notes[index];
+            GameObject noteObject = noteStruct.note;
+            Note noteComp = noteObject.GetComponent<Note>();
+            if (noteComp != null)
+            {
+                noteComp.SetNotePH(fretNum);
+            }
+        }
+    }
 }

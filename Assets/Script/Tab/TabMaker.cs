@@ -167,4 +167,20 @@ public class TabMaker : MonoBehaviour
             tab.SetNoteAH(position, stringNum, sectionIndex);
         }
     }
+
+    public void SetNotePH(string fret)
+    {
+        if (fret.Length == 0 && tab != null)
+        {
+            tab.SetNotePH(position, stringNum, -1, sectionIndex);
+            return;
+        }
+
+        int fretNum;
+
+        if (tab != null && int.TryParse(fret, out fretNum))
+        {
+            tab.SetNotePH(position, stringNum, fretNum, sectionIndex);
+        }
+    }
 }

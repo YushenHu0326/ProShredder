@@ -9,6 +9,7 @@ public class Note : MonoBehaviour
     public int fret;
     public int stringNum;
     public bool aH;
+    public Text pH;
 
     public void SetNote(int position, float interval, int fret, int stringNum)
     {
@@ -47,5 +48,19 @@ public class Note : MonoBehaviour
         }
 
         noteText.text = text;
+    }
+
+    public void SetNotePH(int fret)
+    {
+        if (fret < 0)
+        {
+            pH.text = "";
+        }
+        else{
+            string text = "<";
+            text += fret.ToString();
+            text += ">";
+            pH.text = text;
+        }
     }
 }
