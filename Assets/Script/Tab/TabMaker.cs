@@ -16,6 +16,12 @@ public class TabMaker : MonoBehaviour
     public GameObject nextSectionTransform;
 
     public GameObject noteObject;
+    public GameObject symbol1Object;
+    public GameObject symbol2Object;
+    public GameObject symbol3Object;
+    public GameObject symbol4Object;
+    public GameObject symbol5Object;
+    public GameObject symbol6Object;
 
     Section section;
 
@@ -26,6 +32,8 @@ public class TabMaker : MonoBehaviour
     int stringNum;
 
     int totalString;
+
+    GameObject lastSymbolAdded;
 
     float sectionLength;
 
@@ -92,6 +100,7 @@ public class TabMaker : MonoBehaviour
         }
 
         tab.CycleSection(sectionIndex);
+        lastSymbolAdded = null;
     }
 
     public void MoveRight()
@@ -111,6 +120,7 @@ public class TabMaker : MonoBehaviour
         }
 
         tab.CycleSection(sectionIndex);
+        lastSymbolAdded = null;
     }
 
     public void MoveUp()
@@ -118,6 +128,7 @@ public class TabMaker : MonoBehaviour
         if (stringNum > 1)
         {
             stringNum -= 1;
+            lastSymbolAdded = null;
         }
     }
 
@@ -126,6 +137,7 @@ public class TabMaker : MonoBehaviour
         if (stringNum < totalString)
         {
             stringNum += 1;
+            lastSymbolAdded = null;
         }
     }
 
@@ -181,6 +193,116 @@ public class TabMaker : MonoBehaviour
         if (tab != null && int.TryParse(fret, out fretNum))
         {
             tab.SetNotePH(position, stringNum, fretNum, sectionIndex);
+        }
+    }
+
+    public void WriteSymbol1()
+    {
+        if (tab != null && symbol1Object != null)
+        {
+            Section currentSection = tab.GetSection(sectionIndex);
+            if (mainSectionTransform != null && section != null)
+            {
+                GameObject newSymbol = Instantiate(symbol1Object, mainSectionTransform.transform);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
+                lastSymbolAdded = newSymbol;
+            }
+        }
+    }
+
+    public void WriteSymbol2()
+    {
+        if (tab != null && symbol2Object != null)
+        {
+            Section currentSection = tab.GetSection(sectionIndex);
+            if (mainSectionTransform != null && section != null)
+            {
+                GameObject newSymbol = Instantiate(symbol2Object, mainSectionTransform.transform);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
+                lastSymbolAdded = newSymbol;
+            }
+        }
+    }
+
+    public void WriteSymbol3()
+    {
+        if (tab != null && symbol3Object != null)
+        {
+            Section currentSection = tab.GetSection(sectionIndex);
+            if (mainSectionTransform != null && section != null)
+            {
+                GameObject newSymbol = Instantiate(symbol3Object, mainSectionTransform.transform);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
+                lastSymbolAdded = newSymbol;
+            }
+        }
+    }
+
+    public void WriteSymbol4()
+    {
+        if (tab != null && symbol4Object != null)
+        {
+            Section currentSection = tab.GetSection(sectionIndex);
+            if (mainSectionTransform != null && section != null)
+            {
+                GameObject newSymbol = Instantiate(symbol4Object, mainSectionTransform.transform);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
+                lastSymbolAdded = newSymbol;
+            }
+        }
+    }
+
+    public void WriteSymbol5()
+    {
+        if (tab != null && symbol5Object != null)
+        {
+            Section currentSection = tab.GetSection(sectionIndex);
+            if (mainSectionTransform != null && section != null)
+            {
+                GameObject newSymbol = Instantiate(symbol5Object, mainSectionTransform.transform);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
+                lastSymbolAdded = newSymbol;
+            }
+        }
+    }
+
+    public void WriteSymbol6()
+    {
+        if (tab != null && symbol6Object != null)
+        {
+            Section currentSection = tab.GetSection(sectionIndex);
+            if (mainSectionTransform != null && section != null)
+            {
+                GameObject newSymbol = Instantiate(symbol6Object, mainSectionTransform.transform);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
+                lastSymbolAdded = newSymbol;
+            }
+        }
+    }
+
+    public void SetSymbolSpan(string span)
+    {
+        int result;
+
+        if (int.TryParse(span, out result) && lastSymbolAdded != null)
+        {
+            if (result < 0) return;
+
+            lastSymbolAdded.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, result);
+        }
+    }
+
+    public void ClearSymbol()
+    {
+        if (tab != null)
+        {
+            tab.DeleteSymbol(position, stringNum, sectionIndex);
         }
     }
 }

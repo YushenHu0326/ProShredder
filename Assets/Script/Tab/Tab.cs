@@ -61,6 +61,22 @@ public class Tab : MonoBehaviour
         }
     }
 
+    public void AddSymbol(GameObject symbol, int position, int stringNum, int sectionIndex)
+    {
+        if (sections.Count > sectionIndex)
+        {
+            sections[sectionIndex].AddSymbol(symbol, position, stringNum);
+        }
+    }
+
+    public void DeleteSymbol(int position, int stringNum, int sectionIndex)
+    {
+        if (sections.Count > sectionIndex)
+        {
+            sections[sectionIndex].DeleteSymbol(position, stringNum);
+        }
+    }
+
     public void CycleSection(int sectionIndex)
     {
         if (sectionIndex == 0)

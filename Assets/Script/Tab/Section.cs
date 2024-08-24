@@ -11,12 +11,22 @@ public class Section : MonoBehaviour
         public int stringNum;
     }
 
+    struct SymbolStruct
+    {
+        public List<GameObject> symbolObjs;
+        public int position;
+        public int stringNum;
+    }
+
     List<NoteStruct> notes;
+    List<SymbolStruct> symbols;
+
     public int division;
     // Start is called before the first frame update
     void Start()
     {
         notes = new List<NoteStruct>();
+        symbols = new List<SymbolStruct>();
         division = 8;
     }
 
@@ -115,6 +125,69 @@ public class Section : MonoBehaviour
             {
                 noteComp.SetNotePH(fretNum);
             }
+        }
+    }
+
+    public void AddSymbol(GameObject symbol, int position, int stringNum)
+    {
+        int index = -1;
+        int otherIndex = -1;
+        for (int i = 0; i < symbols.Count; i++)
+        {
+            if (position == symbols[i].position && stringNum == symbols[i].stringNum)
+            {
+                index = i;
+                List<GameObject> symbolObjs = symbols[i].symbolObjs;
+                for (int j = 0; j < symbolObjs.Count; j++)
+                {
+                    if (symbolObjs[j].GetComponent<Symbol>().symbolType == symbol.GetComponent<Symbol>().symbolType)
+                    {
+                        otherIndex = j;
+                    }
+                }
+            }
+        }
+
+        if (index >= 0 && otherIndex >= 0)
+        {
+            GameObject symbolObject = symbols[index].symbolObjs[otherIndex];
+            Destroy(symbolObject);
+            symbols[index].symbolObjs[otherIndex] = symbol;
+        }
+        else if (index >= 0)
+        {
+            symbols[index].symbolObjs.Add(symbol);
+        }
+        else
+        {
+            SymbolStruct newSymbol = new SymbolStruct();
+            newSymbol.symbolObjs = new List<GameObject>(){ symbol };
+            newSymbol.position = position;
+            newSymbol.stringNum = stringNum;
+
+            symbols.Add(newSymbol);
+        }
+    }
+
+    public void DeleteSymbol(int position, int stringNum)
+    {
+        int index = -1;
+        for (int i = 0; i < symbols.Count; i++)
+        {
+            if (position == symbols[i].position && stringNum == symbols[i].stringNum)
+            {
+                index = i;
+            }
+        }
+
+        if (index >= 0)
+        {
+            List<GameObject> symbolObjs = symbols[index].symbolObjs;
+            for (int j = 0; j < symbolObjs.Count; j++)
+            {
+                Destroy(symbolObjs[j]);
+            }
+            symbols[index].symbolObjs.Clear();
         }
     }
 }

@@ -10,11 +10,13 @@ public class Symbol : MonoBehaviour
     public float width, height;
     public float offsetX, offsetY;
 
-    public void SetSymbol(int position, float interval, int fret, int stringNum, int span)
+    public int symbolType;
+
+    public void SetSymbol(int position, float interval, int stringNum, int span)
     {
         RectTransform rect = gameObject.GetComponent<RectTransform>();
         Vector2 pos = rect.anchoredPosition;
-        pos.x = -115f + ((float)position - 1) * interval;
+        pos.x = ((float)position - 1) * interval;
         pos.y = (float)((stringNum - 1) * 10);
         pos.x += offsetX;
         pos.y += offsetY;
@@ -25,7 +27,7 @@ public class Symbol : MonoBehaviour
             Vector2 size = rect.sizeDelta;
             size.x = newWidth;
             rect.sizeDelta = size;
-            pos.x += (newWidth - newWidth) / 2;
+            pos.x += (newWidth - width) / 2;
         }
         rect.anchoredPosition = pos;
     }
