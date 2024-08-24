@@ -15,6 +15,8 @@ public class TabMaker : MonoBehaviour
     public GameObject previousSectionTransform;
     public GameObject nextSectionTransform;
 
+    public GameObject noteObject;
+
     Section section;
 
     int sectionIndex;
@@ -124,6 +126,45 @@ public class TabMaker : MonoBehaviour
         if (stringNum < totalString)
         {
             stringNum += 1;
+        }
+    }
+
+    public void SetCurrentFret(string note)
+    {
+        int result;
+        if (int.TryParse(note, out result))
+        {
+            fret = result;
+        }
+    }
+
+    public void WriteNote()
+    {
+        if (tab != null && noteObject != null)
+        {
+            Section currentSection = tab.GetSection(sectionIndex);
+            if (mainSectionTransform != null && section != null)
+            {
+                GameObject newNote = Instantiate(noteObject, mainSectionTransform.transform);
+                newNote.GetComponent<Note>().SetNote(position, (sectionLength - 10f) / (float)section.division, fret, stringNum);
+                tab.AddNote(newNote, position, stringNum, sectionIndex);
+            }
+        }
+    }
+
+    public void ClearNote()
+    {
+        if (tab != null)
+        {
+            tab.DeleteNote(position, stringNum, sectionIndex);
+        }
+    }
+
+    public void SetNoteAH()
+    {
+        if (tab != null)
+        {
+            tab.SetNoteAH(position, stringNum, sectionIndex);
         }
     }
 }

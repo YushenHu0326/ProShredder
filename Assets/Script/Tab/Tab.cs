@@ -29,19 +29,27 @@ public class Tab : MonoBehaviour
         sections.Add(Instantiate(section));
     }
 
-    public void AddNote(GameObject note, int sectionIndex)
+    public void AddNote(GameObject note, int position, int stringNum, int sectionIndex)
     {
         if (sections.Count > sectionIndex)
         {
-            sections[sectionIndex].AddNote(note);
+            sections[sectionIndex].AddNote(note, position, stringNum);
         }
     }
 
-    public void DeleteNote(GameObject note, int sectionIndex)
+    public void DeleteNote(int position, int stringNum, int sectionIndex)
     {
         if (sections.Count > sectionIndex)
         {
-            sections[sectionIndex].DeleteNote(note);
+            sections[sectionIndex].DeleteNote(position, stringNum);
+        }
+    }
+
+    public void SetNoteAH(int position, int stringNum, int sectionIndex)
+    {
+        if (sections.Count > sectionIndex)
+        {
+            sections[sectionIndex].SetNoteAH(position, stringNum);
         }
     }
 

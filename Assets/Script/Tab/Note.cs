@@ -10,33 +10,42 @@ public class Note : MonoBehaviour
     public int stringNum;
     public bool aH;
 
-    public GameObject pH;
-
-    public void SetNote(int position, float interval, int fret, int stringNum, bool aH, int pH)
+    public void SetNote(int position, float interval, int fret, int stringNum)
     {
         if (noteText != null)
         {
-            this.aH = aH;
-
             string text = "";
-            if (aH)
-            {
-                text += "<";
-            }
             text = fret.ToString();
-            if (aH)
-            {
-                text += ">";
-            }
-
             noteText.text = text;
+            this.fret = fret;
             this.stringNum = stringNum;
 
             RectTransform rect = gameObject.GetComponent<RectTransform>();
             Vector2 pos = rect.anchoredPosition;
-            pos.x = -115f + ((float)position - 1) * interval;
-            pos.y = (float)((stringNum - 1) * 10);
+            pos.x = ((float)position - 1) * interval;
+            pos.y = (float)((stringNum - 1) * -10);
             rect.anchoredPosition = pos;
         }
+    }
+
+    public void SetNoteAH()
+    {
+        aH = !aH;
+
+        string text = "";
+
+        if (aH)
+        {
+            text += "<";
+        }
+
+        text += fret.ToString();
+
+        if (aH)
+        {
+            text += ">";
+        }
+
+        noteText.text = text;
     }
 }
