@@ -10,8 +10,12 @@ public class Tab : MonoBehaviour
 
     public Section section;
 
+    public GameObject mainSection;
+    public GameObject previousSection;
+    public GameObject nextSection;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         ExternalAudioPlayer[] players = FindObjectsOfType(typeof(ExternalAudioPlayer)) as ExternalAudioPlayer[];
 
@@ -38,6 +42,27 @@ public class Tab : MonoBehaviour
         if (sections.Count > sectionIndex)
         {
             sections[sectionIndex].DeleteNote(note);
+        }
+    }
+
+    public void CycleSection(int sectionIndex)
+    {
+        if (sectionIndex == 0)
+        {
+            if (previousSection) previousSection.SetActive(false);
+        }
+        else
+        {
+            if (previousSection) previousSection.SetActive(true);
+        }
+
+        if (sectionIndex + 1 == sections.Count)
+        {
+            if (nextSection) nextSection.SetActive(false);
+        }
+        else
+        {
+            if (nextSection) nextSection.SetActive(true);
         }
     }
 

@@ -52,6 +52,11 @@ public class TabMaker : MonoBehaviour
                 pointerRect.anchoredPosition = new Vector2();
             }
         }
+
+        if (tab != null)
+        {
+            tab.CycleSection(sectionIndex);
+        }
     }
 
     void Update()
@@ -83,6 +88,8 @@ public class TabMaker : MonoBehaviour
                 position += 1;
             }
         }
+
+        tab.CycleSection(sectionIndex);
     }
 
     public void MoveRight()
@@ -92,7 +99,7 @@ public class TabMaker : MonoBehaviour
         position += 1;
         if (position > division)
         {
-            position = 0;
+            position = 1;
             sectionIndex += 1;
 
             if (sectionIndex + 1 > tab.GetSectionTotal())
@@ -100,6 +107,8 @@ public class TabMaker : MonoBehaviour
                 tab.AddSection();
             }
         }
+
+        tab.CycleSection(sectionIndex);
     }
 
     public void MoveUp()
