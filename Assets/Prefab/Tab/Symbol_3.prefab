@@ -90,8 +90,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   symbol: {fileID: 3525739089853636663}
   symbolSpan: 1
-  width: 10
+  width: 15
   height: 20
   offsetX: 10
   offsetY: 10
   symbolType: 3
+  localPosition: 0
+  stringNum: 0

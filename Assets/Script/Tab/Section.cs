@@ -4,29 +4,15 @@ using UnityEngine;
 
 public class Section : MonoBehaviour
 {
-    struct NoteStruct
-    {
-        public GameObject note;
-        public int position;
-        public int stringNum;
-    }
-
-    struct SymbolStruct
-    {
-        public List<GameObject> symbolObjs;
-        public int position;
-        public int stringNum;
-    }
-
-    List<NoteStruct> notes;
-    List<SymbolStruct> symbols;
+    List<Note> notes;
+    List<Symbol> symbols;
 
     public int division;
     // Start is called before the first frame update
     void Start()
     {
-        notes = new List<NoteStruct>();
-        symbols = new List<SymbolStruct>();
+        notes = new List<Note>();
+        symbols = new List<Symbol>();
         division = 8;
     }
 
@@ -35,7 +21,7 @@ public class Section : MonoBehaviour
         int index = -1;
         for (int i = 0; i < notes.Count; i++)
         {
-            if (position == notes[i].position && stringNum == notes[i].stringNum)
+            if (position == notes[i].localPosition && stringNum == notes[i].stringNum)
             {
                 index = i;
             }
@@ -43,20 +29,13 @@ public class Section : MonoBehaviour
 
         if (index >= 0)
         {
-            NoteStruct noteStruct = notes[index];
-            GameObject noteObject = noteStruct.note;
-            Destroy(noteObject);
-            noteStruct.note = note;
+            Note oldNote = notes[index];
+            notes.Remove(oldNote);
+            Destroy(oldNote.gameObject);
         }
-        else
-        {
-            NoteStruct newNote = new NoteStruct();
-            newNote.note = note;
-            newNote.position = position;
-            newNote.stringNum = stringNum;
 
-            notes.Add(newNote);
-        }
+        note.GetComponent<Note>().localPosition = position;
+        notes.Add(note.GetComponent<Note>());
     }
 
     public void DeleteNote(int position, int stringNum)
@@ -65,7 +44,7 @@ public class Section : MonoBehaviour
 
         for (int i = 0; i < notes.Count; i++)
         {
-            if (position == notes[i].position && stringNum == notes[i].stringNum)
+            if (position == notes[i].localPosition && stringNum == notes[i].stringNum)
             {
                 index = i;
             }
@@ -73,10 +52,9 @@ public class Section : MonoBehaviour
 
         if (index >= 0)
         {
-            NoteStruct noteStruct = notes[index];
-            GameObject noteObject = noteStruct.note;
-            Destroy(noteObject);
-            notes.Remove(notes[index]);
+            Note oldNote = notes[index];
+            notes.Remove(oldNote);
+            Destroy(oldNote.gameObject);
         }
     }
 
@@ -86,7 +64,7 @@ public class Section : MonoBehaviour
 
         for (int i = 0; i < notes.Count; i++)
         {
-            if (position == notes[i].position && stringNum == notes[i].stringNum)
+            if (position == notes[i].localPosition && stringNum == notes[i].stringNum)
             {
                 index = i;
             }
@@ -94,13 +72,7 @@ public class Section : MonoBehaviour
 
         if (index >= 0)
         {
-            NoteStruct noteStruct = notes[index];
-            GameObject noteObject = noteStruct.note;
-            Note noteComp = noteObject.GetComponent<Note>();
-            if (noteComp != null)
-            {
-                noteComp.SetNoteAH();
-            }
+            notes[index].SetNoteAH();
         }
     }
 
@@ -110,7 +82,7 @@ public class Section : MonoBehaviour
 
         for (int i = 0; i < notes.Count; i++)
         {
-            if (position == notes[i].position && stringNum == notes[i].stringNum)
+            if (position == notes[i].localPosition && stringNum == notes[i].stringNum)
             {
                 index = i;
             }
@@ -118,12 +90,9 @@ public class Section : MonoBehaviour
 
         if (index >= 0)
         {
-            NoteStruct noteStruct = notes[index];
-            GameObject noteObject = noteStruct.note;
-            Note noteComp = noteObject.GetComponent<Note>();
-            if (noteComp != null)
+            if (index >= 0)
             {
-                noteComp.SetNotePH(fretNum);
+                notes[index].SetNotePH(fretNum);
             }
         }
     }
@@ -131,42 +100,27 @@ public class Section : MonoBehaviour
     public void AddSymbol(GameObject symbol, int position, int stringNum)
     {
         int index = -1;
-        int otherIndex = -1;
+
         for (int i = 0; i < symbols.Count; i++)
         {
-            if (position == symbols[i].position && stringNum == symbols[i].stringNum)
+            if (position == symbols[i].localPosition && stringNum == symbols[i].stringNum)
             {
-                index = i;
-                List<GameObject> symbolObjs = symbols[i].symbolObjs;
-                for (int j = 0; j < symbolObjs.Count; j++)
+                if (symbols[i].symbolType == symbol.GetComponent<Symbol>().symbolType)
                 {
-                    if (symbolObjs[j].GetComponent<Symbol>().symbolType == symbol.GetComponent<Symbol>().symbolType)
-                    {
-                        otherIndex = j;
-                    }
+                    index = i;
                 }
             }
         }
 
-        if (index >= 0 && otherIndex >= 0)
+        if (index >= 0)
         {
-            GameObject symbolObject = symbols[index].symbolObjs[otherIndex];
-            Destroy(symbolObject);
-            symbols[index].symbolObjs[otherIndex] = symbol;
+            Symbol oldSymbol = symbols[index];
+            symbols.Remove(oldSymbol);
+            Destroy(oldSymbol.gameObject);
         }
-        else if (index >= 0)
-        {
-            symbols[index].symbolObjs.Add(symbol);
-        }
-        else
-        {
-            SymbolStruct newSymbol = new SymbolStruct();
-            newSymbol.symbolObjs = new List<GameObject>(){ symbol };
-            newSymbol.position = position;
-            newSymbol.stringNum = stringNum;
-
-            symbols.Add(newSymbol);
-        }
+        
+        symbol.GetComponent<Symbol>().localPosition = position;
+        symbols.Add(symbol.GetComponent<Symbol>());
     }
 
     public void DeleteSymbol(int position, int stringNum)
@@ -174,7 +128,7 @@ public class Section : MonoBehaviour
         int index = -1;
         for (int i = 0; i < symbols.Count; i++)
         {
-            if (position == symbols[i].position && stringNum == symbols[i].stringNum)
+            if (position == symbols[i].localPosition && stringNum == symbols[i].stringNum)
             {
                 index = i;
             }
@@ -182,12 +136,9 @@ public class Section : MonoBehaviour
 
         if (index >= 0)
         {
-            List<GameObject> symbolObjs = symbols[index].symbolObjs;
-            for (int j = 0; j < symbolObjs.Count; j++)
-            {
-                Destroy(symbolObjs[j]);
-            }
-            symbols[index].symbolObjs.Clear();
+            Symbol oldSymbol = symbols[index];
+            symbols.Remove(oldSymbol);
+            Destroy(oldSymbol.gameObject);
         }
     }
 }

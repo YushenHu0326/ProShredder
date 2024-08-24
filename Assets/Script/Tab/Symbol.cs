@@ -12,8 +12,13 @@ public class Symbol : MonoBehaviour
 
     public int symbolType;
 
+    public int localPosition;
+    public int stringNum;
+
     public void SetSymbol(int position, float interval, int stringNum, int span)
     {
+        this.stringNum = stringNum;
+        
         RectTransform rect = gameObject.GetComponent<RectTransform>();
         Vector2 pos = rect.anchoredPosition;
         pos.x = ((float)position - 1) * interval;

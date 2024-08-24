@@ -11,12 +11,15 @@ public class Note : MonoBehaviour
     public bool aH;
     public Text pH;
 
+    public int localPosition;
+
     public void SetNote(int position, float interval, int fret, int stringNum)
     {
         if (noteText != null)
         {
             string text = "";
             text = fret.ToString();
+            if (fret == -1) text = "x";
             noteText.text = text;
             this.fret = fret;
             this.stringNum = stringNum;

@@ -33,6 +33,12 @@ public class TabMaker : MonoBehaviour
 
     int totalString;
 
+    bool isEditing;
+
+    InputField[] inputFields;
+
+    public Text writeButton;
+    string inputStr;
     GameObject lastSymbolAdded;
 
     float sectionLength;
@@ -67,6 +73,8 @@ public class TabMaker : MonoBehaviour
         {
             tab.CycleSection(sectionIndex);
         }
+
+        inputFields = FindObjectsOfType(typeof(InputField)) as InputField[];
     }
 
     void Update()
@@ -75,10 +83,95 @@ public class TabMaker : MonoBehaviour
         {
             section = tab.GetSection(sectionIndex);
             Vector2 pos = new Vector2();
-            pos.x = ((sectionLength - 10f) / (float)section.division) * (float)(position - 1);
+            pos.x = ((sectionLength - 20f) / (float)(section.division - 1)) * (float)(position - 1);
             pos.y = -10f * (stringNum - 1);
 
             pointerRect.anchoredPosition = pos;
+        }
+
+        if (inputFields.Length > 0)
+        {
+            bool focused = false;
+            foreach (InputField inputField in inputFields)
+            {
+                if (inputField.isFocused)
+                {
+                    focused = true;
+                }
+            }
+
+            if (isEditing && !focused)
+            {
+                if (Input.GetKeyDown("1"))
+                {
+                    inputStr += "1";
+                    SetCurrentFret();
+                }
+                if (Input.GetKeyDown("2"))
+                {
+                    inputStr += "2";
+                    SetCurrentFret();
+                }
+                if (Input.GetKeyDown("3"))
+                {
+                    inputStr += "3";
+                    SetCurrentFret();
+                }
+                if (Input.GetKeyDown("4"))
+                {
+                    inputStr += "4";
+                    SetCurrentFret();
+                }
+                if (Input.GetKeyDown("5"))
+                {
+                    inputStr += "5";
+                    SetCurrentFret();
+                }
+                if (Input.GetKeyDown("6"))
+                {
+                    inputStr += "6";
+                    SetCurrentFret();
+                }
+                if (Input.GetKeyDown("7"))
+                {
+                    inputStr += "7";
+                    SetCurrentFret();
+                }
+                if (Input.GetKeyDown("8"))
+                {
+                    inputStr += "8";
+                    SetCurrentFret();
+                }
+                if (Input.GetKeyDown("9"))
+                {
+                    inputStr += "9";
+                    SetCurrentFret();
+                }
+                if (Input.GetKeyDown("0"))
+                {
+                    inputStr += "0";
+                    SetCurrentFret();
+                }
+
+                if (Input.GetKeyDown("x"))
+                {
+                    inputStr = "x";
+                    SetCurrentFret();
+                }
+
+                if (Input.GetKeyDown("backspace"))
+                {
+                    if (inputStr.Length > 1)
+                    {
+                        inputStr = inputStr.Substring(0, inputStr.Length - 1);
+                        SetCurrentFret();
+                    }
+                    else
+                    {
+                        ClearNote();
+                    }
+                }
+            }
         }
     }
 
@@ -101,6 +194,7 @@ public class TabMaker : MonoBehaviour
 
         tab.CycleSection(sectionIndex);
         lastSymbolAdded = null;
+        inputStr = "";
     }
 
     public void MoveRight()
@@ -121,6 +215,7 @@ public class TabMaker : MonoBehaviour
 
         tab.CycleSection(sectionIndex);
         lastSymbolAdded = null;
+        inputStr = "";
     }
 
     public void MoveUp()
@@ -129,6 +224,7 @@ public class TabMaker : MonoBehaviour
         {
             stringNum -= 1;
             lastSymbolAdded = null;
+            inputStr = "";
         }
     }
 
@@ -138,28 +234,50 @@ public class TabMaker : MonoBehaviour
         {
             stringNum += 1;
             lastSymbolAdded = null;
+            inputStr = "";
         }
     }
 
-    public void SetCurrentFret(string note)
+    public void SetCurrentFret()
     {
         int result;
-        if (int.TryParse(note, out result))
+        if (int.TryParse(inputStr, out result))
         {
-            fret = result;
+            if (tab != null && noteObject != null)
+            {
+                Section currentSection = tab.GetSection(sectionIndex);
+                if (mainSectionTransform != null && section != null)
+                {
+                    GameObject newNote = Instantiate(noteObject, mainSectionTransform.transform);
+                    newNote.GetComponent<Note>().SetNote(position, (sectionLength - 20f) / (float)(section.division - 1), result, stringNum);
+                    tab.AddNote(newNote, position, stringNum, sectionIndex);
+                }
+            }
+        }
+        else
+        {
+            if (inputStr.ToLower().Equals("x"))
+            {
+                GameObject newNote = Instantiate(noteObject, mainSectionTransform.transform);
+                newNote.GetComponent<Note>().SetNote(position, (sectionLength - 20f) / (float)(section.division - 1), -1, stringNum);
+                tab.AddNote(newNote, position, stringNum, sectionIndex);
+                inputStr = "";
+            }
         }
     }
 
     public void WriteNote()
     {
-        if (tab != null && noteObject != null)
+        isEditing = !isEditing;
+        if (writeButton != null)
         {
-            Section currentSection = tab.GetSection(sectionIndex);
-            if (mainSectionTransform != null && section != null)
+            if (isEditing)
             {
-                GameObject newNote = Instantiate(noteObject, mainSectionTransform.transform);
-                newNote.GetComponent<Note>().SetNote(position, (sectionLength - 10f) / (float)section.division, fret, stringNum);
-                tab.AddNote(newNote, position, stringNum, sectionIndex);
+                writeButton.text = "Stop";
+            }
+            else
+            {
+                writeButton.text = "Write";
             }
         }
     }
@@ -204,7 +322,7 @@ public class TabMaker : MonoBehaviour
             if (mainSectionTransform != null && section != null)
             {
                 GameObject newSymbol = Instantiate(symbol1Object, mainSectionTransform.transform);
-                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 20f) / (float)(section.division - 1), stringNum, 1);
                 tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
                 lastSymbolAdded = newSymbol;
             }
@@ -219,7 +337,7 @@ public class TabMaker : MonoBehaviour
             if (mainSectionTransform != null && section != null)
             {
                 GameObject newSymbol = Instantiate(symbol2Object, mainSectionTransform.transform);
-                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 20f) / (float)(section.division - 1), stringNum, 1);
                 tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
                 lastSymbolAdded = newSymbol;
             }
@@ -234,7 +352,7 @@ public class TabMaker : MonoBehaviour
             if (mainSectionTransform != null && section != null)
             {
                 GameObject newSymbol = Instantiate(symbol3Object, mainSectionTransform.transform);
-                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 20f) / (float)(section.division - 1), stringNum, 1);
                 tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
                 lastSymbolAdded = newSymbol;
             }
@@ -249,7 +367,7 @@ public class TabMaker : MonoBehaviour
             if (mainSectionTransform != null && section != null)
             {
                 GameObject newSymbol = Instantiate(symbol4Object, mainSectionTransform.transform);
-                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 20f) / (float)(section.division - 1), stringNum, 1);
                 tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
                 lastSymbolAdded = newSymbol;
             }
@@ -264,7 +382,7 @@ public class TabMaker : MonoBehaviour
             if (mainSectionTransform != null && section != null)
             {
                 GameObject newSymbol = Instantiate(symbol5Object, mainSectionTransform.transform);
-                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 20f) / (float)(section.division - 1), stringNum, 1);
                 tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
                 lastSymbolAdded = newSymbol;
             }
@@ -279,7 +397,7 @@ public class TabMaker : MonoBehaviour
             if (mainSectionTransform != null && section != null)
             {
                 GameObject newSymbol = Instantiate(symbol6Object, mainSectionTransform.transform);
-                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, 1);
+                newSymbol.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 20f) / (float)(section.division - 1), stringNum, 1);
                 tab.AddSymbol(newSymbol, position, stringNum, sectionIndex);
                 lastSymbolAdded = newSymbol;
             }
@@ -294,7 +412,7 @@ public class TabMaker : MonoBehaviour
         {
             if (result < 0) return;
 
-            lastSymbolAdded.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 10f) / (float)section.division, stringNum, result);
+            lastSymbolAdded.GetComponent<Symbol>().SetSymbol(position, (sectionLength - 20f) / (float)(section.division - 1), stringNum, result);
         }
     }
 
