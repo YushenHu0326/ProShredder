@@ -199,11 +199,12 @@ public class TabMaker : MonoBehaviour
             }
             else
             {
-                position += 1;
+                position = 1;
             }
         }
 
         tab.CycleSection(sectionIndex);
+        tab.UpdateSectionDisplay(sectionIndex, mainSectionTransform.transform, previousSectionTransform.transform, nextSectionTransform.transform);
         lastSymbolAdded = null;
         inputStr = "";
     }
@@ -223,6 +224,7 @@ public class TabMaker : MonoBehaviour
         }
 
         tab.CycleSection(sectionIndex);
+        tab.UpdateSectionDisplay(sectionIndex, mainSectionTransform.transform, previousSectionTransform.transform, nextSectionTransform.transform);
         lastSymbolAdded = null;
         inputStr = "";
     }

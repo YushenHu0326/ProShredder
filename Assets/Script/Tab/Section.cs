@@ -184,4 +184,35 @@ public class Section : MonoBehaviour
             Destroy(symbol.gameObject);
         }
     }
+
+    public void LoadSection(Transform parent)
+    {
+        if (notes == null) return;
+        if (symbols == null) return;
+
+        foreach (Note note in notes)
+        {
+            note.gameObject.SetActive(true);
+            note.gameObject.transform.SetParent(parent, false);
+        }
+
+        foreach (Symbol symbol in symbols)
+        {
+            symbol.gameObject.SetActive(true);
+            symbol.gameObject.transform.SetParent(parent, false);
+        }
+    }
+
+    public void UnloadSection()
+    {
+        foreach (Note note in notes)
+        {
+            note.gameObject.SetActive(true);
+        }
+
+        foreach (Symbol symbol in symbols)
+        {
+            symbol.gameObject.SetActive(true);
+        }
+    }
 }

@@ -98,6 +98,28 @@ public class Tab : MonoBehaviour
         }
     }
 
+    public void UpdateSectionDisplay(int sectionIndex, Transform mainTransform, Transform previousTransform, Transform nextTransform)
+    {
+        List<Section> displayedSections = new List<Section>() { sections[sectionIndex] };
+        sections[sectionIndex].LoadSection(mainTransform);
+
+        if (sectionIndex > 0)
+        {
+            displayedSections.Add(sections[sectionIndex - 1]);
+            sections[sectionIndex - 1].LoadSection(previousTransform);
+        }
+        if (sectionIndex + 1 < sections.Count)
+        {
+            displayedSections.Add(sections[sectionIndex + 1]);
+            sections[sectionIndex + 1].LoadSection(nextTransform);
+        }
+
+        foreach (Section section in sections)
+        {
+            if (!displayedSections.Contains(section)) section.UnloadSection();
+        }
+    }
+
     public Section GetSection(int sectionIndex)
     {
         return sections[sectionIndex];
