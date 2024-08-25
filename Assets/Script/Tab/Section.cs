@@ -142,11 +142,18 @@ public class Section : MonoBehaviour
         }
     }
 
-    public void ResetNotePosition(float interval, float spanRation)
+    public void ResetNotePosition(float interval, int previousDivision, int newDivision)
     {
+        List<Note> deleteNote = new List<Note>();
+        List<Symbol> deleteSymbol = new List<Symbol>();
+
         foreach (Note note in notes)
         {
             int position = note.localPosition;
+            if (position > newDivision)
+            {
+                deleteNote.Add(note);
+            }
             int fret = note.fret;
             int stringNum = note.stringNum;
             note.SetNote(position, interval, fret, stringNum);
@@ -155,10 +162,26 @@ public class Section : MonoBehaviour
         foreach (Symbol symbol in symbols)
         {
             int position = symbol.localPosition;
+            if (position > newDivision)
+            {
+                deleteSymbol.Add(symbol);
+            }
             int stringNum = symbol.stringNum;
             float span = symbol.symbolSpan;
-            span *= spanRation;
+            span *= (float) previousDivision / (float) previousDivision;
             symbol.SetSymbol(position, interval, stringNum, span);
+        }
+
+        foreach (Note note in deleteNote)
+        {
+            notes.Remove(note);
+            Destroy(note.gameObject);
+        }
+
+        foreach (Symbol symbol in deleteSymbol)
+        {
+            symbols.Remove(symbol);
+            Destroy(symbol.gameObject);
         }
     }
 }

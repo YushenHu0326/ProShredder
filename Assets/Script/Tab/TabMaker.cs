@@ -283,8 +283,10 @@ public class TabMaker : MonoBehaviour
             if (result > 0 && result <= 32)
             {
                 Section currentSection = tab.GetSection(sectionIndex);
+                int previousDivision = currentDivision;
                 currentSection.division = result;
-                currentSection.ResetNotePosition((sectionLength - 20f) / (float)(section.division - 1), defaultDivision / (float)result);
+                currentSection.ResetNotePosition((sectionLength - 20f) / (float)(section.division - 1), previousDivision, result);
+                position = Mathf.RoundToInt((float)(position - 1) * (float)result / (float)currentDivision) + 1;
             }
         }
     }
