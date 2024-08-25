@@ -36,7 +36,7 @@ public class SourceAudioDropdown : MonoBehaviour
             FileInfo[] infos = directory.GetFiles("*.*");
             foreach (FileInfo info in infos)
             {
-                if (supportedFormat.Contains(info.Name.Substring(info.Name.Length - 3)))
+                if (supportedFormat.Contains(info.Name.Substring(info.Name.Length - 3)) && !info.Name.Contains(" "))
                 {
                     options.Add(info.Name);
                 }

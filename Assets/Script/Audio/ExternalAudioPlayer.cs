@@ -137,6 +137,13 @@ public class ExternalAudioPlayer : MonoBehaviour
 
         UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip("file:///" + audioFilePath, type);
         yield return req.SendWebRequest();
+
+        if (req.result == UnityWebRequest.Result.ConnectionError)
+        {
+            isLoading = false;
+            yield return null;
+        }
+
         AudioClip clip = DownloadHandlerAudioClip.GetContent(req);
 
         isLoading = false;
