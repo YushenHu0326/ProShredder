@@ -15,6 +15,8 @@ public class Note : MonoBehaviour
 
     public void SetNote(int position, float interval, int fret, int stringNum)
     {
+        localPosition = position;
+
         if (noteText != null)
         {
             string text = "";

@@ -141,4 +141,24 @@ public class Section : MonoBehaviour
             Destroy(oldSymbol.gameObject);
         }
     }
+
+    public void ResetNotePosition(float interval, float spanRation)
+    {
+        foreach (Note note in notes)
+        {
+            int position = note.localPosition;
+            int fret = note.fret;
+            int stringNum = note.stringNum;
+            note.SetNote(position, interval, fret, stringNum);
+        }
+
+        foreach (Symbol symbol in symbols)
+        {
+            int position = symbol.localPosition;
+            int stringNum = symbol.stringNum;
+            float span = symbol.symbolSpan;
+            span *= spanRation;
+            symbol.SetSymbol(position, interval, stringNum, span);
+        }
+    }
 }
