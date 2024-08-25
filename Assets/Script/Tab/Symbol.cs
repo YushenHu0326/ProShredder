@@ -18,7 +18,6 @@ public class Symbol : MonoBehaviour
 
     public void SetSymbol(int position, float interval, int stringNum, float span)
     {
-        Debug.Log(span);
         localPosition = position;
 
         this.stringNum = stringNum;

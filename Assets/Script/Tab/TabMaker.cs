@@ -280,7 +280,7 @@ public class TabMaker : MonoBehaviour
         int result;
         if (tab != null && int.TryParse(division, out result))
         {
-            if (result > 0 && result <= 18)
+            if (result > 0 && result <= 32)
             {
                 Section currentSection = tab.GetSection(sectionIndex);
                 currentSection.division = result;
