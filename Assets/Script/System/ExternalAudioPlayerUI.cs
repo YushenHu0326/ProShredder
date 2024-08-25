@@ -143,6 +143,14 @@ public class ExternalAudioPlayerUI : MonoBehaviour, IDragHandler, IDropHandler, 
         tune = tune - 1;
         if (mixer != null)
         {
+            if (tune == 0)
+            {
+                mixer.SetFloat("EnableAudioPitchShift", -80f);
+            }
+            else
+            {
+                mixer.SetFloat("EnableAudioPitchShift", 0f);
+            }
             mixer.SetFloat("ExternalAudioPitch", Mathf.Pow(1.059f, tune));
         }
     }
@@ -152,6 +160,14 @@ public class ExternalAudioPlayerUI : MonoBehaviour, IDragHandler, IDropHandler, 
         tune = tune + 1;
         if (mixer != null)
         {
+            if (tune == 0)
+            {
+                mixer.SetFloat("EnableAudioPitchShift", -80f);
+            }
+            else
+            {
+                mixer.SetFloat("EnableAudioPitchShift", 0f);
+            }
             mixer.SetFloat("ExternalAudioPitch", Mathf.Pow(1.059f, tune));
         }
     }

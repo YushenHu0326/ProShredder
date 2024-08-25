@@ -153,12 +153,11 @@ public class ExternalAudioPlayer : MonoBehaviour
         float[] samples = new float[audioSource.clip.samples * audioSource.clip.channels];
         audioSource.clip.GetData(samples, 0);
 
-
         int startIndex = 0;
 
         for (int i = 0; i < samples.Length; i++)
         {
-            if (samples[i] > 0.0001)
+            if (samples[i] > 0.0001f)
             {
                 startIndex = i;
                 break;

@@ -207,12 +207,12 @@ public class Section : MonoBehaviour
     {
         foreach (Note note in notes)
         {
-            note.gameObject.SetActive(true);
+            note.gameObject.SetActive(false);
         }
 
         foreach (Symbol symbol in symbols)
         {
-            symbol.gameObject.SetActive(true);
+            symbol.gameObject.SetActive(false);
         }
     }
 }

@@ -18,6 +18,8 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 6bf749449ac524f509677d632a069e2a
     name: ExternalAudioPitch
+  - guid: f6748025c19914d2b874eb37c3724abc
+    name: EnableAudioPitchShift
   m_AudioMixerGroupViews:
   - guids:
     - 1aa7fbc86c85143beb497081d283910b
@@ -67,7 +69,9 @@ AudioMixerSnapshotController:
   m_Name: Snapshot
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 356ebabe64c914236960cce7e5a83219
-  m_FloatValues: {}
+  m_FloatValues:
+    ad0c1e0369ef24954b4f750f872bf26e: 1
+    a996a3c7f12dd4e7eb6bb4b4be3c024e: 1024
   m_TransitionOverrides: {}
 --- !u!244 &3313863576649299930
 AudioMixerEffectController:
@@ -89,5 +93,5 @@ AudioMixerEffectController:
   - m_ParameterName: Max channels
     m_GUID: fcc360cbdfa874c8cb87fcd0277980ae
   m_SendTarget: {fileID: 0}
-  m_EnableWetMix: 0
+  m_EnableWetMix: 1
   m_Bypass: 0
