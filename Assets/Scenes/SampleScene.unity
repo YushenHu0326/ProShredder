@@ -2236,6 +2236,7 @@ MonoBehaviour:
   videoDropdown: {fileID: 2119550049}
   webCamFeed: {fileID: 1306102400}
   buttons: {fileID: 0}
+  guitarMixer: {fileID: 24100000, guid: aef6de0b4e34643818a99801d250b4a6, type: 2}
   guitarDistortionText: {fileID: 1591188643}
 --- !u!1 &344330062
 GameObject:
@@ -10440,7 +10441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050c1b416a99e4349b15e8c63d08a5b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guitarMixer: {fileID: 24100000, guid: aef6de0b4e34643818a99801d250b4a6, type: 2}
+  guitarMixer: {fileID: 24300002, guid: aef6de0b4e34643818a99801d250b4a6, type: 2}
 --- !u!4 &1539659705
 Transform:
   m_ObjectHideFlags: 0

@@ -13,6 +13,8 @@ public class ButtonEvent : MonoBehaviour
 
     public GameObject buttons;
 
+    public AudioMixer guitarMixer;
+
     bool audioIsPlaying, videoIsPlaying;
 
     public Text guitarDistortionText;
@@ -55,35 +57,27 @@ public class ButtonEvent : MonoBehaviour
 
     public void SetGuitarDistortion()
     {
-        AudioManager[] audioManagers = FindObjectsOfType(typeof(AudioManager)) as AudioManager[];
-        if (audioManagers.Length > 0)
+        if (guitarMixer != null)
         {
-            if (audioManagers[0].guitarMixer != null)
+            guitarDistorted = !guitarDistorted;
+            if (guitarDistorted)
+                {
+                guitarMixer.SetFloat("DistortionEnabled", 0f);
+                if (guitarDistortionText != null) guitarDistortionText.text = "Distortion On";
+            }
+            else
             {
-                guitarDistorted = !guitarDistorted;
-                if (guitarDistorted)
-                {
-                    audioManagers[0].guitarMixer.SetFloat("DistortionEnabled", 0f);
-                    if (guitarDistortionText != null) guitarDistortionText.text = "Distortion On";
-                }
-                else
-                {
-                    audioManagers[0].guitarMixer.SetFloat("DistortionEnabled", -80f);
-                    if (guitarDistortionText != null) guitarDistortionText.text = "Distortion Off";
-                }
+                guitarMixer.SetFloat("DistortionEnabled", -80f);
+                if (guitarDistortionText != null) guitarDistortionText.text = "Distortion Off";
             }
         }
     }
 
     public void SetGuitarDistortionLevel(float level)
     {
-        AudioManager[] audioManagers = FindObjectsOfType(typeof(AudioManager)) as AudioManager[];
-        if (audioManagers.Length > 0)
+        if (guitarMixer != null)
         {
-            if (audioManagers[0].guitarMixer != null)
-            {
-                audioManagers[0].guitarMixer.SetFloat("DistortionLevel", 0.9f + level / 12f);
-            }
+            guitarMixer.SetFloat("DistortionLevel", 0.9f + level / 12f);
         }
     }
 }
