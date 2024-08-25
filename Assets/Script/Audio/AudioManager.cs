@@ -7,7 +7,7 @@ public class AudioManager : MonoBehaviour
 {
     private AudioSource audioSource;
 
-    public AudioMixerGroup guitarMixer;
+    public AudioMixer guitarMixer;
 
     public bool StartPlaying(int deviceID)
     {
@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        audioSource.outputAudioMixerGroup = guitarMixer;
+        audioSource.outputAudioMixerGroup = guitarMixer.outputAudioMixerGroup;
 
         if (Microphone.devices.Length > deviceID)
         {
