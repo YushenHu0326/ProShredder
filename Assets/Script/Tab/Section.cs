@@ -38,62 +38,47 @@ public class Section : MonoBehaviour
         notes.Add(note.GetComponent<Note>());
     }
 
-    public void DeleteNote(int position, int stringNum)
+    public Note GetNote(int position, int stringNum)
     {
-        int index = -1;
-
         for (int i = 0; i < notes.Count; i++)
         {
             if (position == notes[i].localPosition && stringNum == notes[i].stringNum)
             {
-                index = i;
+                return notes[i];
             }
         }
 
-        if (index >= 0)
+        return null;
+    }
+
+    public void DeleteNote(int position, int stringNum)
+    {
+        Note note = GetNote(position, stringNum);
+
+        if (note != null)
         {
-            Note oldNote = notes[index];
-            notes.Remove(oldNote);
-            Destroy(oldNote.gameObject);
+            notes.Remove(note);
+            Destroy(note.gameObject);
         }
     }
 
     public void SetNoteAH(int position, int stringNum)
     {
-        int index = -1;
+        Note note = GetNote(position, stringNum);
 
-        for (int i = 0; i < notes.Count; i++)
+        if (note != null)
         {
-            if (position == notes[i].localPosition && stringNum == notes[i].stringNum)
-            {
-                index = i;
-            }
-        }
-
-        if (index >= 0)
-        {
-            notes[index].SetNoteAH();
+            note.SetNoteAH();
         }
     }
 
     public void SetNotePH(int position, int stringNum, int fretNum)
     {
-        int index = -1;
+        Note note = GetNote(position, stringNum);
 
-        for (int i = 0; i < notes.Count; i++)
+        if (note != null)
         {
-            if (position == notes[i].localPosition && stringNum == notes[i].stringNum)
-            {
-                index = i;
-            }
-        }
-
-        if (index >= 0)
-        {
-            if (index >= 0)
-            {
-                notes[index].SetNotePH(fretNum);
-            }
+            note.SetNotePH(fretNum);
         }
     }
 

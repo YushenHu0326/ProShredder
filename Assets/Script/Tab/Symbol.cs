@@ -24,7 +24,7 @@ public class Symbol : MonoBehaviour
         
         RectTransform rect = gameObject.GetComponent<RectTransform>();
         Vector2 pos = rect.anchoredPosition;
-        pos.x = ((float)position - 1) * interval;
+        pos.x = ((float)position - 0.5f) * interval;
         pos.y = (float)((stringNum - 1) * -10);
         pos.x += offsetX;
         pos.y += offsetY;

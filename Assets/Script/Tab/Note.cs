@@ -28,7 +28,7 @@ public class Note : MonoBehaviour
 
             RectTransform rect = gameObject.GetComponent<RectTransform>();
             Vector2 pos = rect.anchoredPosition;
-            pos.x = ((float)position - 1) * interval;
+            pos.x = ((float)position - 0.5f) * interval;
             pos.y = (float)((stringNum - 1) * -10);
             rect.anchoredPosition = pos;
         }
@@ -67,5 +67,15 @@ public class Note : MonoBehaviour
             text += ">";
             pH.text = text;
         }
+    }
+
+    public void OnNoteSelected()
+    {
+        noteText.color = Color.red;
+    }
+
+    public void OnNoteDeselected()
+    {
+        noteText.color = Color.black;
     }
 }
