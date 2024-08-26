@@ -9,6 +9,8 @@ public class AudioManager : MonoBehaviour
 
     public AudioMixerGroup guitarMixer;
 
+    int deviceID;
+
     public bool StartPlaying(int deviceID)
     {
         if (deviceID < 0) return false;
@@ -23,6 +25,8 @@ public class AudioManager : MonoBehaviour
 
         if (Microphone.devices.Length > deviceID)
         {
+            this.deviceID = deviceID;
+            
             int minFreq, maxFreq, freq;
             Microphone.GetDeviceCaps(Microphone.devices[deviceID], out minFreq, out maxFreq);
             freq = Mathf.Min(44100, maxFreq);
@@ -41,10 +45,9 @@ public class AudioManager : MonoBehaviour
 
     public void StopPlaying()
     {
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource != null)
+        if (Microphone.devices.Length > deviceID)
         {
-            audioSource.Stop();
+            Microphone.End(Microphone.devices[deviceID]);
         }
     }
 }
