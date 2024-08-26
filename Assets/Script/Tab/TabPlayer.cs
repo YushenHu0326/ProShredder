@@ -49,13 +49,13 @@ public class TabPlayer : MonoBehaviour
             for (int i = 0; i < totalSections; i++)
             {
                 currentSectionIndex = i;
-                nextSectionStartTime += 8f * 60f / (float)tab.GetSectionBPM(i);
+                nextSectionStartTime += 4f * 60f / (float)tab.GetSectionBPM(i);
                 if (nextSectionStartTime > currentTime) break;
             }
 
             for (int i = 0; i < currentSectionIndex; i++)
             {
-                currentTime -= 8f * 60f / (float)tab.GetSectionBPM(i);
+                currentTime -= 4f * 60f / (float)tab.GetSectionBPM(i);
             }
 
             if (currentSectionIndex != sectionIndex)
@@ -69,13 +69,13 @@ public class TabPlayer : MonoBehaviour
             {
                 Vector2 pos = rectTransform.anchoredPosition;
 
-                if (currentTime > 8f * 60f / (float)tab.GetSectionBPM(sectionIndex))
+                if (currentTime > 4f * 60f / (float)tab.GetSectionBPM(sectionIndex))
                 {
                     pos.x = sectionTransform.rect.width;
                 }
                 else
                 {
-                    pos.x = currentTime / (8f * 60f / (float)tab.GetSectionBPM(sectionIndex)) * sectionTransform.rect.width;
+                    pos.x = currentTime / (4f * 60f / (float)tab.GetSectionBPM(sectionIndex)) * sectionTransform.rect.width;
                 }
 
                 rectTransform.anchoredPosition = pos;

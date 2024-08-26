@@ -184,6 +184,7 @@ public class TabMaker : MonoBehaviour
                     }
                     else
                     {
+                        inputStr = "";
                         ClearNote();
                     }
                 }

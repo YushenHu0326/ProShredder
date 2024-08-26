@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 10, y: 0}
-  m_SizeDelta: {x: 10, y: 5}
+  m_AnchoredPosition: {x: 15, y: 0}
+  m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5254659651250809962
 CanvasRenderer:
@@ -90,9 +90,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   symbol: {fileID: 5254659651250809963}
   symbolSpan: 1
-  width: 10
+  currentSymbolSpan: 0
+  width: 20
   height: 5
-  offsetX: 10
+  offsetX: 15
   offsetY: 0
   symbolType: 6
   localPosition: 0

@@ -9,7 +9,7 @@ public class Symbol : MonoBehaviour
     public float symbolSpan;
     public float currentSymbolSpan;
     public float width, height;
-    public float offsetX, offsetY;
+    public float offsetY;
 
     public int symbolType;
 
@@ -26,17 +26,21 @@ public class Symbol : MonoBehaviour
         Vector2 pos = rect.anchoredPosition;
         pos.x = ((float)position - 0.5f) * interval;
         pos.y = (float)((stringNum - 1) * -10);
-        pos.x += offsetX;
+        
         pos.y += offsetY;
 
         if (symbolSpan > 0)
         {
-            float newWidth = width * span;
+            float newWidth = interval * span;
             Vector2 size = rect.sizeDelta;
             size.x = newWidth;
             rect.sizeDelta = size;
-            pos.x += (newWidth - width) / 2;
+            pos.x += newWidth / 2f;
             currentSymbolSpan = span;
+        }
+        else
+        {
+            pos.x += width / 2f;
         }
         rect.anchoredPosition = pos;
     }
