@@ -10,6 +10,7 @@ public class Note : MonoBehaviour
     public int stringNum;
     public bool aH;
     public Text pH;
+    public int pHFret;
 
     public int localPosition;
 
@@ -62,6 +63,7 @@ public class Note : MonoBehaviour
             pH.text = "";
         }
         else{
+            pHFret = fret;
             string text = "<";
             text += fret.ToString();
             text += ">";

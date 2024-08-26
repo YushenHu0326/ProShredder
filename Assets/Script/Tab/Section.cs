@@ -8,16 +8,19 @@ public class Section : MonoBehaviour
     List<Symbol> symbols;
 
     public int division;
-    // Start is called before the first frame update
-    void Start()
+
+    public void OnSectionCreated()
     {
         notes = new List<Note>();
         symbols = new List<Symbol>();
         division = 8;
+
+        Debug.Log(notes);
     }
 
     public void AddNote(GameObject note, int position, int stringNum)
     {
+        Debug.Log(notes);
         int index = -1;
         for (int i = 0; i < notes.Count; i++)
         {
@@ -237,5 +240,15 @@ public class Section : MonoBehaviour
             symbols.Remove(symbol);
             Destroy(symbol.gameObject);
         }
+    }
+
+    public List<Note> GetAllNotes()
+    {
+        return notes;
+    }
+
+    public List<Symbol> GetAllSymbols()
+    {
+        return symbols;
     }
 }

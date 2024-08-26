@@ -1,11 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TabMaker : MonoBehaviour
 {
+    [System.Serializable]
+    public class TabData
+    {
+        public List<NoteData> notes;
+        public List<SymbolData> symbols;
+        public int position;
+        public int stringNum;
+        public int totalString;
+        public int totalSections;
+
+        public int currentSection;
+
+        public List<int> bpms;
+        public List<int> divisions;
+    }
+
+    [System.Serializable]
+    public class NoteData 
+    {
+        public int section;
+        public int position;
+        public int fret;
+        public int stringNum;
+        public bool aH;
+        public int pH;
+    }
+
+    [System.Serializable]
+    public class SymbolData
+    {
+        public int section;
+        public int symbolType;
+        public int position;
+        public int stringNum;
+        public float span;
+    }
+
     public Tab tab;
+
+    string tabName;
+    string loadTabName;
 
     public GameObject mainSection;
     public GameObject previousSection;
@@ -62,6 +103,9 @@ public class TabMaker : MonoBehaviour
 
     void Start()
     {
+        tabName = "tab";
+        loadTabName = "tab";
+
         stringNum = 1;
         position = 1;
 
@@ -241,6 +285,111 @@ public class TabMaker : MonoBehaviour
         }
     }
 
+    public void SaveTab()
+    {
+        TabData tabData = new TabData();
+
+        if (tab != null)
+        {
+            List<NoteData> noteDataList = new List<NoteData>();
+            List<SymbolData> symbolDataList = new List<SymbolData>();
+
+            List<int> bpms = new List<int>();
+            List<int> divisions = new List<int>();
+
+            for (int i = 0; i < tab.GetSectionTotal(); i++)
+            {
+                List<Note> notes = tab.GetAllNotes(i);
+                List<Symbol> symbols = tab.GetAllSymbols(i);
+
+                foreach (Note note in notes)
+                {
+                    NoteData noteData = new NoteData();
+                    noteData.section = i;
+                    noteData.position = note.localPosition;
+                    noteData.fret = note.fret;
+                    noteData.stringNum = note.stringNum;
+                    noteData.aH = note.aH;
+                    noteData.pH = note.pHFret;
+
+                    noteDataList.Add(noteData);
+                }
+
+                foreach (Symbol symbol in symbols)
+                {
+                    SymbolData symbolData = new SymbolData();
+                    symbolData.section = i;
+                    symbolData.symbolType = symbol.symbolType;
+                    symbolData.position = symbol.localPosition;
+                    symbolData.stringNum = symbol.stringNum;
+                    symbolData.span = symbol.currentSymbolSpan;
+
+                    symbolDataList.Add(symbolData);
+                }
+
+                bpms.Add(tab.GetSectionBPM(i));
+                divisions.Add(tab.GetSection(i).division);
+            }
+
+            tabData.notes = noteDataList;
+            tabData.symbols = symbolDataList;
+            tabData.position = position;
+            tabData.stringNum = stringNum;
+            tabData.totalString = totalString;
+            tabData.totalSections = tab.GetSectionTotal();
+            tabData.bpms = bpms;
+            tabData.divisions = divisions;
+
+            tabData.currentSection = sectionIndex;
+
+            string tabStr = JsonUtility.ToJson(tabData);
+            System.IO.File.WriteAllText(Application.dataPath + "/" + tabName + ".json", tabStr);
+        }
+    }
+
+    public void LoadTab()
+    {
+        if (tab != null)
+        {
+            tab.ResetTab();
+            string tabDataStr = File.ReadAllText(Application.dataPath + "/" + loadTabName + ".json");
+            TabData tabData = JsonUtility.FromJson<TabData>(tabDataStr);
+
+            for (int i = 0; i < tabData.totalSections; i++)
+            {
+                tab.AddSection(tabData.bpms[i]);
+            }
+
+            foreach (NoteData noteData in tabData.notes)
+            {
+                if (noteData.fret >= 0)
+                {
+                    Section currentSection = tab.GetSection(noteData.section);
+                    if (mainSectionTransform != null && noteObject != null)
+                    {
+                        GameObject newNote = Instantiate(noteObject, mainSectionTransform.transform);
+                        newNote.GetComponent<Note>().SetNote(noteData.position, sectionLength / (float)tabData.divisions[noteData.section], noteData.fret, noteData.stringNum);
+                        tab.AddNote(newNote, noteData.position, noteData.stringNum, noteData.section);
+                    }
+                }
+            }
+
+            stringNum = tabData.stringNum;
+            position = tabData.position;
+
+            totalString = tabData.totalString;
+            SetStrings();
+
+            tab.CycleSection(tabData.currentSection);
+            bpm = tab.GetSectionBPM(tabData.currentSection);
+        }
+    }
+
+    public void SetSaveTabName(string name)
+    {
+        tabName = name;
+    }
+
     void SetStrings()
     {
         for (int i = 0; i < totalString; i++)
@@ -369,10 +518,13 @@ public class TabMaker : MonoBehaviour
         {
             if (inputStr.ToLower().Equals("x"))
             {
-                GameObject newNote = Instantiate(noteObject, mainSectionTransform.transform);
-                newNote.GetComponent<Note>().SetNote(position, sectionLength / (float)section.division, -1, stringNum);
-                tab.AddNote(newNote, position, stringNum, sectionIndex);
-                inputStr = "";
+                if (mainSectionTransform != null && section != null)
+                {
+                    GameObject newNote = Instantiate(noteObject, mainSectionTransform.transform);
+                    newNote.GetComponent<Note>().SetNote(position, sectionLength / (float)section.division, -1, stringNum);
+                    tab.AddNote(newNote, position, stringNum, sectionIndex);
+                    inputStr = "";
+                }
             }
         }
     }

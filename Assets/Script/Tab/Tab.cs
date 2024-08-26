@@ -27,11 +27,35 @@ public class Tab : MonoBehaviour
             player = players[0];
         }
 
+        ResetTab();
+    }
+
+    public void ResetTab()
+    {
+        Note[] notes = FindObjectsOfType(typeof(Note)) as Note[];
+        Symbol[] symbols = FindObjectsOfType(typeof(Symbol)) as Symbol[];
+        Section[] currentSections = FindObjectsOfType(typeof(Section)) as Section[];
+
+        foreach (Section section in currentSections)
+        {
+            Destroy(section.gameObject);
+        }
+
+        foreach (Note note in notes)
+        {
+            Destroy(note.gameObject);
+        }
+
+        foreach (Symbol symbol in symbols)
+        {
+            Destroy(symbol.gameObject);
+        }
+
         sections = new List<Section>();
 
         sections.Add(Instantiate(section));
 
-        bpms = new List<int>(){ 120 };
+        bpms = new List<int>() { 120 };
     }
 
     public void AddNote(GameObject note, int position, int stringNum, int sectionIndex)
@@ -171,7 +195,9 @@ public class Tab : MonoBehaviour
 
     public void AddSection(int bpm)
     {
-        sections.Add(Instantiate(section));
+        Section addedSection = Instantiate(section);
+        addedSection.OnSectionCreated();
+        sections.Add(addedSection);
         bpms.Add(bpm);
     }
 
@@ -183,5 +209,25 @@ public class Tab : MonoBehaviour
         }
 
         return 0;
+    }
+
+    public List<Note> GetAllNotes(int sectionIndex)
+    {
+        List<Note> notes = new List<Note>();
+        List<Note> sectionNotes = sections[sectionIndex].GetAllNotes();
+        foreach (Note note in sectionNotes)
+            notes.Add(note);
+
+        return notes;
+    }
+
+    public List<Symbol> GetAllSymbols(int sectionIndex)
+    {
+        List<Symbol> symbols = new List<Symbol>();
+        List<Symbol> sectionSymbols = sections[sectionIndex].GetAllSymbols();
+        foreach (Symbol symbol in sectionSymbols)
+            symbols.Add(symbol);
+
+        return symbols;
     }
 }
