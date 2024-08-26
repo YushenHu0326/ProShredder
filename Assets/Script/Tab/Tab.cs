@@ -7,12 +7,15 @@ public class Tab : MonoBehaviour
     ExternalAudioPlayer player;
 
     List<Section> sections;
+    List<int> bpms;
 
     public Section section;
 
     public GameObject mainSection;
     public GameObject previousSection;
     public GameObject nextSection;
+
+    public GameObject bpmIndicator;
 
     // Start is called before the first frame update
     void Awake()
@@ -27,6 +30,8 @@ public class Tab : MonoBehaviour
         sections = new List<Section>();
 
         sections.Add(Instantiate(section));
+
+        bpms = new List<int>(){ 120 };
     }
 
     public void AddNote(GameObject note, int position, int stringNum, int sectionIndex)
@@ -96,6 +101,19 @@ public class Tab : MonoBehaviour
         {
             if (nextSection) nextSection.SetActive(true);
         }
+
+        if (sectionIndex == 0)
+        {
+            if (bpmIndicator != null) bpmIndicator.SetActive(true);
+        }
+        else if (bpms[sectionIndex - 1] != bpms[sectionIndex])
+        {
+            if (bpmIndicator != null) bpmIndicator.SetActive(true);
+        }
+        else
+        {
+            if (bpmIndicator != null) bpmIndicator.SetActive(false);
+        }
     }
 
     public void UpdateSectionDisplay(int sectionIndex, Transform mainTransform, Transform previousTransform, Transform nextTransform)
@@ -122,7 +140,20 @@ public class Tab : MonoBehaviour
 
     public Section GetSection(int sectionIndex)
     {
+        if (sectionIndex < 0) return null;
+        if (sectionIndex >= sections.Count) return null;
+
         return sections[sectionIndex];
+    }
+
+    public int GetSectionBPM(int sectionIndex)
+    {
+        return bpms[sectionIndex];
+    }
+
+    public void SetSectionBPM(int sectionIndex, int bpm)
+    {
+        bpms[sectionIndex] = bpm;
     }
 
     public int GetSectionTotal()
@@ -130,9 +161,10 @@ public class Tab : MonoBehaviour
         return sections.Count;
     }
 
-    public void AddSection()
+    public void AddSection(int bpm)
     {
         sections.Add(Instantiate(section));
+        bpms.Add(bpm);
     }
 
     public int GetSectionDivision(int index)

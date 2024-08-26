@@ -15,6 +15,8 @@ public class TabMaker : MonoBehaviour
     public GameObject previousSectionTransform;
     public GameObject nextSectionTransform;
 
+    public Text bpmIndicator;
+
     public GameObject noteObject;
     public GameObject symbol1Object;
     public GameObject symbol2Object;
@@ -25,6 +27,7 @@ public class TabMaker : MonoBehaviour
     public GameObject symbol7Object;
 
     Section section;
+    int bpm;
 
     int sectionIndex;
     int subsection;
@@ -82,6 +85,7 @@ public class TabMaker : MonoBehaviour
         if (tab != null)
         {
             tab.CycleSection(sectionIndex);
+            bpm = tab.GetSectionBPM(sectionIndex);
         }
 
         inputFields = FindObjectsOfType(typeof(InputField)) as InputField[];
@@ -171,6 +175,22 @@ public class TabMaker : MonoBehaviour
                     SetNote();
                 }
 
+                if (Input.GetKeyDown("backspace"))
+                {
+                    if (inputStr.Length > 1)
+                    {
+                        inputStr = inputStr.Substring(0, inputStr.Length - 1);
+                        SetNote();
+                    }
+                    else
+                    {
+                        ClearNote();
+                    }
+                }
+            }
+
+            if (!focused)
+            {
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
                     MoveLeft();
@@ -189,19 +209,6 @@ public class TabMaker : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.DownArrow))
                 {
                     MoveDown();
-                }
-
-                if (Input.GetKeyDown("backspace"))
-                {
-                    if (inputStr.Length > 1)
-                    {
-                        inputStr = inputStr.Substring(0, inputStr.Length - 1);
-                        SetNote();
-                    }
-                    else
-                    {
-                        ClearNote();
-                    }
                 }
             }
         }
@@ -222,6 +229,11 @@ public class TabMaker : MonoBehaviour
             {
                 selectedNote = newSelectedNote;
                 selectedNote.OnNoteSelected();
+            }
+
+            if (bpmIndicator != null)
+            {
+                bpmIndicator.text = "BPM " + tab.GetSectionBPM(sectionIndex);
             }
         }
     }
@@ -259,7 +271,7 @@ public class TabMaker : MonoBehaviour
 
             if (sectionIndex + 1 > tab.GetSectionTotal())
             {
-                tab.AddSection();
+                tab.AddSection(bpm);
             }
         }
 
@@ -286,6 +298,16 @@ public class TabMaker : MonoBehaviour
             stringNum += 1;
             lastSymbolAdded = null;
             inputStr = "";
+        }
+    }
+
+    public void SetBPM(string bpm)
+    {
+        int result;
+        if (int.TryParse(bpm, out result) && tab != null)
+        {
+            this.bpm = result;
+            tab.SetSectionBPM(sectionIndex, result);
         }
     }
 

@@ -40,6 +40,8 @@ public class Section : MonoBehaviour
 
     public Note GetNote(int position, int stringNum)
     {
+        if (notes == null) return null;
+
         for (int i = 0; i < notes.Count; i++)
         {
             if (position == notes[i].localPosition && stringNum == notes[i].stringNum)
@@ -190,6 +192,9 @@ public class Section : MonoBehaviour
 
     public void UnloadSection()
     {
+        if (notes == null) return;
+        if (symbols == null) return;
+
         foreach (Note note in notes)
         {
             note.gameObject.SetActive(false);

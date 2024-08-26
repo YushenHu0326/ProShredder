@@ -38,6 +38,14 @@ public class ExternalAudioPlayer : MonoBehaviour
         audioSource.outputAudioMixerGroup = mixer;
     }
 
+    void Update()
+    {
+        if (audioSource.clip != null && !isPaused)
+        {
+            currentTime = audioSource.time;
+        }
+    }
+
     public void LoadAudio()
     {
         if (audioFilePath.Length > 0)
@@ -86,7 +94,6 @@ public class ExternalAudioPlayer : MonoBehaviour
     {
         audioSource.Pause();
         isPaused = true;
-        currentTime = audioSource.time;
     }
 
     public void StopAudio()
@@ -165,5 +172,13 @@ public class ExternalAudioPlayer : MonoBehaviour
         }
 
         truncateTime = audioSource.clip.length * ((float)startIndex / (float)samples.Length);
+    }
+
+    public bool IsPlaying()
+    {
+        if (audioSource.clip == null) return false;
+        if (isPaused) return false;
+
+        return audioSource.isPlaying;
     }
 }
