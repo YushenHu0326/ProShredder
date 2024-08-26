@@ -94,9 +94,9 @@ MonoBehaviour:
   currentSymbolSpan: 0
   width: 10
   height: 15
-  offsetX: 7.5
   offsetY: 7.5
-  symbolType: 3
+  symbolType: 2
+  symbolID: 3
   localPosition: 0
   stringNum: 0
 --- !u!1 &3551983900016815578

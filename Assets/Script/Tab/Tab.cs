@@ -195,9 +195,7 @@ public class Tab : MonoBehaviour
 
     public void AddSection(int bpm)
     {
-        Section addedSection = Instantiate(section);
-        addedSection.OnSectionCreated();
-        sections.Add(addedSection);
+        sections.Add(Instantiate(section));
         bpms.Add(bpm);
     }
 

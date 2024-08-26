@@ -9,18 +9,17 @@ public class Section : MonoBehaviour
 
     public int division;
 
-    public void OnSectionCreated()
+    public void Start()
     {
-        notes = new List<Note>();
-        symbols = new List<Symbol>();
+        if (notes == null) notes = new List<Note>();
+        if (symbols == null) symbols = new List<Symbol>();
         division = 8;
-
-        Debug.Log(notes);
     }
 
     public void AddNote(GameObject note, int position, int stringNum)
     {
-        Debug.Log(notes);
+        if (notes == null) notes = new List<Note>();
+
         int index = -1;
         for (int i = 0; i < notes.Count; i++)
         {
@@ -43,7 +42,7 @@ public class Section : MonoBehaviour
 
     public Note GetNote(int position, int stringNum)
     {
-        if (notes == null) return null;
+        if (notes == null) notes = new List<Note>();
 
         for (int i = 0; i < notes.Count; i++)
         {
@@ -89,6 +88,8 @@ public class Section : MonoBehaviour
 
     public void AddSymbol(GameObject symbol, int position, int stringNum)
     {
+        if (symbols == null) symbols = new List<Symbol>();
+
         int index = -1;
 
         for (int i = 0; i < symbols.Count; i++)
@@ -115,6 +116,8 @@ public class Section : MonoBehaviour
 
     public void DeleteSymbol(int position, int stringNum)
     {
+        if (symbols == null) symbols = new List<Symbol>();
+
         int index = -1;
         for (int i = 0; i < symbols.Count; i++)
         {
@@ -134,6 +137,9 @@ public class Section : MonoBehaviour
 
     public void ResetNotePosition(float interval, int previousDivision, int newDivision)
     {
+        if (notes == null) notes = new List<Note>();
+        if (symbols == null) symbols = new List<Symbol>();
+
         List<Note> deleteNote = new List<Note>();
         List<Symbol> deleteSymbol = new List<Symbol>();
 
@@ -177,8 +183,8 @@ public class Section : MonoBehaviour
 
     public void LoadSection(Transform parent)
     {
-        if (notes == null) return;
-        if (symbols == null) return;
+        if (notes == null) notes = new List<Note>();
+        if (symbols == null) symbols = new List<Symbol>();
 
         foreach (Note note in notes)
         {
@@ -195,8 +201,8 @@ public class Section : MonoBehaviour
 
     public void UnloadSection()
     {
-        if (notes == null) return;
-        if (symbols == null) return;
+        if (notes == null) notes = new List<Note>();
+        if (symbols == null) symbols = new List<Symbol>();
 
         foreach (Note note in notes)
         {
@@ -211,8 +217,8 @@ public class Section : MonoBehaviour
 
     public void UnloadString(int stringIndex)
     {
-        if (notes == null) return;
-        if (symbols == null) return;
+        if (notes == null) notes = new List<Note>();
+        if (symbols == null) symbols = new List<Symbol>();
 
         List<Note> deleteNotes = new List<Note>();
         List<Symbol> deleteSymbols = new List<Symbol>();

@@ -319,7 +319,7 @@ public class TabMaker : MonoBehaviour
                 {
                     SymbolData symbolData = new SymbolData();
                     symbolData.section = i;
-                    symbolData.symbolType = symbol.symbolType;
+                    symbolData.symbolType = symbol.symbolID;
                     symbolData.position = symbol.localPosition;
                     symbolData.stringNum = symbol.stringNum;
                     symbolData.span = symbol.currentSymbolSpan;
@@ -343,7 +343,8 @@ public class TabMaker : MonoBehaviour
             tabData.currentSection = sectionIndex;
 
             string tabStr = JsonUtility.ToJson(tabData);
-            System.IO.File.WriteAllText(Application.dataPath + "/" + tabName + ".json", tabStr);
+            System.IO.Directory.CreateDirectory(Application.dataPath + "/Saved/Tab");
+            System.IO.File.WriteAllText(Application.dataPath + "/Saved/Tab/" + tabName + ".json", tabStr);
         }
     }
 
@@ -352,36 +353,64 @@ public class TabMaker : MonoBehaviour
         if (tab != null)
         {
             tab.ResetTab();
-            string tabDataStr = File.ReadAllText(Application.dataPath + "/" + loadTabName + ".json");
+            string tabDataStr = File.ReadAllText(Application.dataPath + "/Saved/Tab/" + loadTabName + ".json");
             TabData tabData = JsonUtility.FromJson<TabData>(tabDataStr);
 
-            for (int i = 0; i < tabData.totalSections; i++)
+            for (int i = 1; i < tabData.totalSections; i++)
             {
                 tab.AddSection(tabData.bpms[i]);
             }
 
             foreach (NoteData noteData in tabData.notes)
             {
-                if (noteData.fret >= 0)
+                Section currentSection = tab.GetSection(noteData.section);
+                if (mainSectionTransform != null && noteObject != null)
                 {
-                    Section currentSection = tab.GetSection(noteData.section);
-                    if (mainSectionTransform != null && noteObject != null)
-                    {
-                        GameObject newNote = Instantiate(noteObject, mainSectionTransform.transform);
-                        newNote.GetComponent<Note>().SetNote(noteData.position, sectionLength / (float)tabData.divisions[noteData.section], noteData.fret, noteData.stringNum);
-                        tab.AddNote(newNote, noteData.position, noteData.stringNum, noteData.section);
-                    }
+                    GameObject newNote = Instantiate(noteObject, mainSectionTransform.transform);
+                    newNote.GetComponent<Note>().SetNote(noteData.position, sectionLength / (float)tabData.divisions[noteData.section], noteData.fret, noteData.stringNum);
+                    tab.AddNote(newNote, noteData.position, noteData.stringNum, noteData.section);
                 }
             }
 
-            stringNum = tabData.stringNum;
-            position = tabData.position;
+            foreach (SymbolData symbolData in tabData.symbols)
+            {
+                Section currentSection = tab.GetSection(symbolData.section);
+
+                if (mainSectionTransform != null)
+                {
+                    sectionIndex = symbolData.section;
+                    position = symbolData.position;
+                    stringNum = symbolData.stringNum;
+
+                    if (symbolData.symbolType == 1) WriteSymbol1();
+                    if (symbolData.symbolType == 2) WriteSymbol2();
+                    if (symbolData.symbolType == 3) WriteSymbol3();
+                    if (symbolData.symbolType == 4) WriteSymbol4();
+                    if (symbolData.symbolType == 5) WriteSymbol5();
+                    if (symbolData.symbolType == 6) WriteSymbol6();
+                    if (symbolData.symbolType == 7) WriteSymbol7();
+
+                    if (symbolData.span > 1f)
+                    {
+                        for (int i = 1; i < (int)symbolData.span; i++)
+                        {
+                            AddSymbolSpan();
+                        }
+                    }
+                }
+            }
 
             totalString = tabData.totalString;
             SetStrings();
 
             tab.CycleSection(tabData.currentSection);
+            tab.UpdateSectionDisplay(tabData.currentSection, mainSectionTransform.transform, previousSectionTransform.transform, nextSectionTransform.transform);
             bpm = tab.GetSectionBPM(tabData.currentSection);
+
+            stringNum = tabData.stringNum;
+            position = tabData.position;
+
+            sectionIndex = tabData.currentSection;
         }
     }
 
@@ -411,7 +440,7 @@ public class TabMaker : MonoBehaviour
 
     public void AddStringNum()
     {
-        if (totalString + 1 < mainSectionStrings.Length)
+        if (totalString < mainSectionStrings.Length)
             totalString += 1;
 
         SetStrings();

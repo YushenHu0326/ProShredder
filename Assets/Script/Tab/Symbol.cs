@@ -12,6 +12,7 @@ public class Symbol : MonoBehaviour
     public float offsetY;
 
     public int symbolType;
+    public int symbolID;
 
     public int localPosition;
     public int stringNum;

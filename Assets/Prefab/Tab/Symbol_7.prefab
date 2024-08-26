@@ -93,8 +93,8 @@ MonoBehaviour:
   currentSymbolSpan: 0
   width: 20
   height: 5
-  offsetX: 15
   offsetY: 0
-  symbolType: 6
+  symbolType: 3
+  symbolID: 7
   localPosition: 0
   stringNum: 0
