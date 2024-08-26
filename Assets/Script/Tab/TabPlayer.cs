@@ -41,7 +41,7 @@ public class TabPlayer : MonoBehaviour
         {
             if (!player.IsPlaying()) return;
 
-            float currentTime = Mathf.Max(player.currentTime - player.truncateTime, 0f);
+            float currentTime = player.currentTime;
 
             int currentSectionIndex = 0;
             float nextSectionStartTime = 0f;

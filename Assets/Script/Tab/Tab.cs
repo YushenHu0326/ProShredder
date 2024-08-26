@@ -50,6 +50,14 @@ public class Tab : MonoBehaviour
         }
     }
 
+    public void UnloadString(int stringIndex)
+    {
+        foreach (Section section in sections)
+        {
+            section.UnloadString(stringIndex);
+        }
+    }
+
     public void SetNoteAH(int position, int stringNum, int sectionIndex)
     {
         if (sections.Count > sectionIndex)

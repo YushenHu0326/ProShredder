@@ -205,4 +205,37 @@ public class Section : MonoBehaviour
             symbol.gameObject.SetActive(false);
         }
     }
+
+    public void UnloadString(int stringIndex)
+    {
+        if (notes == null) return;
+        if (symbols == null) return;
+
+        List<Note> deleteNotes = new List<Note>();
+        List<Symbol> deleteSymbols = new List<Symbol>();
+
+        foreach (Note note in notes)
+        {
+            if (note.stringNum == stringIndex)
+                deleteNotes.Add(note);
+        }
+
+        foreach (Symbol symbol in symbols)
+        {
+            if (symbol.stringNum == stringIndex)
+                deleteSymbols.Add(symbol);
+        }
+
+        foreach (Note note in deleteNotes)
+        {
+            notes.Remove(note);
+            Destroy(note.gameObject);
+        }
+
+        foreach (Symbol symbol in deleteSymbols)
+        {
+            symbols.Remove(symbol);
+            Destroy(symbol.gameObject);
+        }
+    }
 }

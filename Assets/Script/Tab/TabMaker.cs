@@ -15,6 +15,10 @@ public class TabMaker : MonoBehaviour
     public GameObject previousSectionTransform;
     public GameObject nextSectionTransform;
 
+    public GameObject[] mainSectionStrings;
+    public GameObject[] previousSectionStrings;
+    public GameObject[] nextSectionStrings;
+
     public Text bpmIndicator;
 
     public GameObject noteObject;
@@ -61,7 +65,8 @@ public class TabMaker : MonoBehaviour
         stringNum = 1;
         position = 1;
 
-        totalString = 6;
+        totalString = 5;
+        SetStrings();
 
         if (mainSection != null)
         {
@@ -234,6 +239,41 @@ public class TabMaker : MonoBehaviour
                 bpmIndicator.text = "BPM " + tab.GetSectionBPM(sectionIndex);
             }
         }
+    }
+
+    void SetStrings()
+    {
+        for (int i = 0; i < totalString; i++)
+        {
+            if (i < mainSectionStrings.Length) mainSectionStrings[i].SetActive(true);
+            if (i < previousSectionStrings.Length) previousSectionStrings[i].SetActive(true);
+            if (i < nextSectionStrings.Length) nextSectionStrings[i].SetActive(true);
+        }
+
+        for (int i = totalString; i < mainSectionStrings.Length; i++)
+        {
+            mainSectionStrings[i].SetActive(false);
+            previousSectionStrings[i].SetActive(false);
+            nextSectionStrings[i].SetActive(false);
+
+            if (tab != null) tab.UnloadString(i);
+        }
+    }
+
+    public void AddStringNum()
+    {
+        if (totalString + 1 < mainSectionStrings.Length)
+            totalString += 1;
+
+        SetStrings();
+    }
+
+    public void DeleteStringNum()
+    {
+        if (totalString - 1 > 0)
+            totalString -= 1;
+
+        SetStrings();
     }
 
     public void MoveLeft()
