@@ -8,13 +8,8 @@ public class Section : MonoBehaviour
     List<Symbol> symbols;
 
     public int division;
-
-    public void Start()
-    {
-        if (notes == null) notes = new List<Note>();
-        if (symbols == null) symbols = new List<Symbol>();
-        division = 8;
-    }
+    public int timeSignatureLower;
+    public int timeSignatureUpper;
 
     public void AddNote(GameObject note, int position, int stringNum)
     {

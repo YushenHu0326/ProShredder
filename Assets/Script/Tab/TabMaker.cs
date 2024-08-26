@@ -20,6 +20,8 @@ public class TabMaker : MonoBehaviour
 
         public List<int> bpms;
         public List<int> divisions;
+        public List<int> timeSignatureLowers;
+        public List<int> timeSignatureUppers;
     }
 
     [System.Serializable]
@@ -296,6 +298,8 @@ public class TabMaker : MonoBehaviour
 
             List<int> bpms = new List<int>();
             List<int> divisions = new List<int>();
+            List<int> timeSignatureLowers = new List<int>();
+            List<int> timeSignatureUppers = new List<int>();
 
             for (int i = 0; i < tab.GetSectionTotal(); i++)
             {
@@ -329,6 +333,8 @@ public class TabMaker : MonoBehaviour
 
                 bpms.Add(tab.GetSectionBPM(i));
                 divisions.Add(tab.GetSection(i).division);
+                timeSignatureLowers.Add(tab.GetSection(i).timeSignatureLower);
+                timeSignatureUppers.Add(tab.GetSection(i).timeSignatureUpper);
             }
 
             tabData.notes = noteDataList;
@@ -358,7 +364,7 @@ public class TabMaker : MonoBehaviour
 
             for (int i = 1; i < tabData.totalSections; i++)
             {
-                tab.AddSection(tabData.bpms[i]);
+                tab.AddSection(tabData.bpms[i], tabData.divisions[i], tabData.timeSignatureLowers[i], tabData.timeSignatureUppers[i]);
             }
 
             foreach (NoteData noteData in tabData.notes)
@@ -487,7 +493,7 @@ public class TabMaker : MonoBehaviour
 
             if (sectionIndex + 1 > tab.GetSectionTotal())
             {
-                tab.AddSection(bpm);
+                tab.AddSection(bpm, 8, 4, 4);
             }
         }
 
@@ -524,6 +530,24 @@ public class TabMaker : MonoBehaviour
         {
             this.bpm = result;
             tab.SetSectionBPM(sectionIndex, result);
+        }
+    }
+
+    public void SetTimeSignatureUpper(string tsu)
+    {
+        int result;
+        if (tab != null && int.TryParse(tsu, out result))
+        {
+            tab.GetSection(sectionIndex).timeSignatureUpper = result;
+        }
+    }
+
+    public void SetTimeSignatureLower(string tsl)
+    {
+        int result;
+        if (tab != null && int.TryParse(tsl, out result))
+        {
+            tab.GetSection(sectionIndex).timeSignatureLower = result;
         }
     }
 

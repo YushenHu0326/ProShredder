@@ -53,7 +53,11 @@ public class Tab : MonoBehaviour
 
         sections = new List<Section>();
 
-        sections.Add(Instantiate(section));
+        Section sectionComp = Instantiate(section).GetComponent<Section>();
+        sectionComp.division = 8;
+        sectionComp.timeSignatureLower = 4;
+        sectionComp.timeSignatureUpper = 4;
+        sections.Add(sectionComp);
 
         bpms = new List<int>() { 120 };
     }
@@ -193,9 +197,13 @@ public class Tab : MonoBehaviour
         return sections.Count;
     }
 
-    public void AddSection(int bpm)
+    public void AddSection(int bpm, int division, int timeSignatureLower, int timeSignatureUpper)
     {
-        sections.Add(Instantiate(section));
+        Section sectionComp = Instantiate(section).GetComponent<Section>();
+        sectionComp.division = division;
+        sectionComp.timeSignatureLower = timeSignatureLower;
+        sectionComp.timeSignatureUpper = timeSignatureUpper;
+        sections.Add(sectionComp);
         bpms.Add(bpm);
     }
 
