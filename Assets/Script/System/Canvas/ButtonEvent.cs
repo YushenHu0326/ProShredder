@@ -6,12 +6,15 @@ using UnityEngine.Audio;
 
 public class ButtonEvent : MonoBehaviour
 {
+    public GameObject buttons;
+    public GameObject tabs;
+    public Text buttonToggler;
+    public Text tabToggler;
+
     public AudioDeviceDropdown audioDropdown;
     public VideoDeviceDropdown videoDropdown;
 
     public WebCamFeed webCamFeed;
-
-    public GameObject buttons;
 
     public AudioMixer guitarMixer;
 
@@ -78,6 +81,38 @@ public class ButtonEvent : MonoBehaviour
         if (guitarMixer != null)
         {
             guitarMixer.SetFloat("DistortionLevel", 0.9f + level / 12f);
+        }
+    }
+
+    public void ToggleUI()
+    {
+        if (buttons != null && buttonToggler != null)
+        {
+            buttons.SetActive(!buttons.activeSelf);
+            if (buttons.activeSelf)
+            {
+                buttonToggler.text = "Disable UI";
+            }
+            else
+            {
+                buttonToggler.text = "Enable UI";
+            }
+        }
+    }
+
+    public void ToggleTab()
+    {
+        if (tabs != null && tabToggler != null)
+        {
+            tabs.SetActive(!tabs.activeSelf);
+            if (tabs.activeSelf)
+            {
+                tabToggler.text = "Disable Tab";
+            }
+            else
+            {
+                tabToggler.text = "Enable Tab";
+            }
         }
     }
 }
