@@ -11,20 +11,20 @@ I hope this app can take some of the jobs and let guitarists focus on shredding!
 ## Current Features (will be updated frequently...)
 
 - A RockSmith-like interface for recording the guitar and video simultaneously.
-- A mini audio player that can load the audio file from a destinated folder. (clearly I don't want Eagles to sue me over the copyright issue so pls find your own source lol)
+- A mini audio player that can load the audio file from a destinated folder. (clearly I don't want Eagles to sue me over the copyright issue so pls find your own source lol) The functions of raising/lowering the pitch of the audio is added so you don't have to drop your tune when playing 80's hard rock.
 - A count-in system.
+- A tablature making system that contains basic note and guitar techniques (bending, harmonics) notation, timeline synchronization with the source audio, save/load, etc..
+- A built-in simple pedal system, currently it only contains distortion effect and delay effect.
 
 ## Upcoming Plans
 
 - Hook up AI model for instruments separation. Currently I am thinking about using existing APIs, but clearly it is not a long-term solution. With that you can play with the separated backing track of your desire.
-- Manual tab-making system. I hope this will help people posting covers with tabs on Youtube lol.
 - Video/audio recording, multi-channel editing, basically a poor man's version of any DAW and Video Editor combined.
 - Post-processing effector chains.
 
 ## Further Plans
 
 - AI-assisted tab-making.
-- Real-time effector chains.
 - Blues improvisation mode.
 - Multi-audio channel input for people who want to sing while playing.
 
@@ -39,7 +39,7 @@ Notice that this is far from the final version, but you're welcome to test it ou
 - A PC with a good sound card/driver. (This is important, when I use my Windows laptop to test it out, the lag is so egregious that I cannot play. A MacBook may be a good choice, at least my MacBook works well)
 - Unity 2020.3.48f software.
 - An audio interface. I am using Scarlett 2i2.
-- A pedal board if you want to play heavy distorted music. (Unfortunately Unity is not a DAW. I don't think I am able to process the sound in the audio buffer with virtual effector while maintaining low latency)
+- A pedal board if you want more dynamic pedal effects.
 - A guitar/bass
 
 ## Tutorial
