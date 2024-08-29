@@ -54,6 +54,16 @@ public class ExternalAudioPlayer : MonoBehaviour
         }
     }
 
+    public void UnloadAudio()
+    {
+        audioSource.clip = null;
+    }
+
+    public bool AudioLoaded()
+    {
+        return audioSource.clip != null;
+    }
+
     public void PlayAudio()
     {
         if (audioSource.isPlaying) return;

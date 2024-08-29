@@ -30,12 +30,12 @@ public class ButtonEvent : MonoBehaviour
         {
             if (audioIsPlaying)
             {
-                audioManagers[0].StopPlaying();
+                audioManagers[0].StopPlaying(0f);
                 audioIsPlaying = false;
             }
             else
             {
-                bool playing = audioManagers[0].StartPlaying(audioDropdown.GetDeviceID());
+                bool playing = audioManagers[0].StartPlaying(audioDropdown.GetDeviceID(), 0);
                 audioIsPlaying = playing;
             }
         }

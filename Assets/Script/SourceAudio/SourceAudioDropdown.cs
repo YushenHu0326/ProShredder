@@ -60,6 +60,14 @@ public class SourceAudioDropdown : MonoBehaviour
                     audioPlayers[0].LoadAudio();
                 }
             }
+            else
+            {
+                ExternalAudioPlayer[] audioPlayers = FindObjectsOfType(typeof(ExternalAudioPlayer)) as ExternalAudioPlayer[];
+                if (audioPlayers.Length > 0)
+                {
+                    audioPlayers[0].UnloadAudio();
+                }
+            }
         }
     }
 }
