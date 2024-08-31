@@ -8,6 +8,7 @@ public class Tab : MonoBehaviour
 
     List<Section> sections;
     List<int> bpms;
+    List<string> annotations;
 
     public Section section;
 
@@ -60,6 +61,7 @@ public class Tab : MonoBehaviour
         sections.Add(sectionComp);
 
         bpms = new List<int>() { 120 };
+        annotations = new List<string>() { "" };
     }
 
     public void AddNote(GameObject note, int position, int stringNum, int sectionIndex)
@@ -122,33 +124,33 @@ public class Tab : MonoBehaviour
     {
         if (sectionIndex == 0)
         {
-            if (previousSection) previousSection.SetActive(false);
+            previousSection.SetActive(false);
         }
         else
         {
-            if (previousSection) previousSection.SetActive(true);
+            previousSection.SetActive(true);
         }
 
         if (sectionIndex + 1 == sections.Count)
         {
-            if (nextSection) nextSection.SetActive(false);
+            nextSection.SetActive(false);
         }
         else
         {
-            if (nextSection) nextSection.SetActive(true);
+            nextSection.SetActive(true);
         }
 
         if (sectionIndex == 0)
         {
-            if (bpmIndicator != null) bpmIndicator.SetActive(true);
+            bpmIndicator.SetActive(true);
         }
         else if (bpms[sectionIndex - 1] != bpms[sectionIndex])
         {
-            if (bpmIndicator != null) bpmIndicator.SetActive(true);
+            bpmIndicator.SetActive(true);
         }
         else
         {
-            if (bpmIndicator != null) bpmIndicator.SetActive(false);
+            bpmIndicator.SetActive(false);
         }
     }
 
@@ -192,6 +194,18 @@ public class Tab : MonoBehaviour
         bpms[sectionIndex] = bpm;
     }
 
+    public string GetSectionAnnotation(int sectionIndex)
+    {
+        if (sectionIndex < 0) return "";
+        if (sectionIndex >= annotations.Count) return "";
+        return annotations[sectionIndex];
+    }
+
+    public void SetSectionAnnotation(int sectionIndex, string annotation)
+    {
+        annotations[sectionIndex] = annotation;
+    }
+
     public int GetSectionTotal()
     {
         return sections.Count;
@@ -205,6 +219,7 @@ public class Tab : MonoBehaviour
         sectionComp.timeSignatureUpper = timeSignatureUpper;
         sections.Add(sectionComp);
         bpms.Add(bpm);
+        annotations.Add("");
     }
 
     public int GetSectionDivision(int index)

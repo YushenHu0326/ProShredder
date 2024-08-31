@@ -22,6 +22,7 @@ public class TabMaker : MonoBehaviour
         public List<int> divisions;
         public List<int> timeSignatureLowers;
         public List<int> timeSignatureUppers;
+        public List<string> annotataions;
     }
 
     [System.Serializable]
@@ -63,6 +64,9 @@ public class TabMaker : MonoBehaviour
     public GameObject[] nextSectionStrings;
 
     public Text bpmIndicator;
+    public Text mainAnnotataion;
+    public Text previousAnnotataion;
+    public Text nextAnnotataion;
 
     public GameObject noteObject;
     public GameObject symbol1Object;
@@ -75,6 +79,8 @@ public class TabMaker : MonoBehaviour
 
     Section section;
     int bpm;
+    int timeSignatureUpper;
+    int timeSignatureLower;
 
     int sectionIndex;
     int subsection;
@@ -100,6 +106,8 @@ public class TabMaker : MonoBehaviour
     int currentDivision;
 
     Note selectedNote;
+
+    public Text annotationInput;
 
     public bool interactiveMode;
 
@@ -280,11 +288,13 @@ public class TabMaker : MonoBehaviour
                 selectedNote.OnNoteSelected();
             }
 
-            if (bpmIndicator != null)
-            {
-                bpmIndicator.text = "BPM " + tab.GetSectionBPM(sectionIndex);
-            }
+            bpmIndicator.text = "BPM " + tab.GetSectionBPM(sectionIndex);
+            mainAnnotataion.text = tab.GetSectionAnnotation(sectionIndex);
+            previousAnnotataion.text = tab.GetSectionAnnotation(sectionIndex - 1);
+            nextAnnotataion.text = tab.GetSectionAnnotation(sectionIndex + 1);
         }
+
+        annotationInput.text = tab.GetSectionAnnotation(sectionIndex);
     }
 
     public void SaveTab()
@@ -300,6 +310,7 @@ public class TabMaker : MonoBehaviour
             List<int> divisions = new List<int>();
             List<int> timeSignatureLowers = new List<int>();
             List<int> timeSignatureUppers = new List<int>();
+            List<string> annotations = new List<string>();
 
             for (int i = 0; i < tab.GetSectionTotal(); i++)
             {
@@ -335,6 +346,7 @@ public class TabMaker : MonoBehaviour
                 divisions.Add(tab.GetSection(i).division);
                 timeSignatureLowers.Add(tab.GetSection(i).timeSignatureLower);
                 timeSignatureUppers.Add(tab.GetSection(i).timeSignatureUpper);
+                annotations.Add(tab.GetSectionAnnotation(i));
             }
 
             tabData.notes = noteDataList;
@@ -345,6 +357,9 @@ public class TabMaker : MonoBehaviour
             tabData.totalSections = tab.GetSectionTotal();
             tabData.bpms = bpms;
             tabData.divisions = divisions;
+            tabData.timeSignatureUppers = timeSignatureUppers;
+            tabData.timeSignatureLowers = timeSignatureLowers;
+            tabData.annotataions = annotations;
 
             tabData.currentSection = sectionIndex;
 
@@ -364,7 +379,16 @@ public class TabMaker : MonoBehaviour
 
             for (int i = 1; i < tabData.totalSections; i++)
             {
-                tab.AddSection(tabData.bpms[i], tabData.divisions[i], tabData.timeSignatureLowers[i], tabData.timeSignatureUppers[i]);
+                tab.AddSection(120, 8, 4, 4);
+            }
+
+            for (int i = 0; i < tabData.totalSections; i++)
+            {
+                tab.SetSectionBPM(i, tabData.bpms[i]);
+                tab.GetSection(i).division = tabData.divisions[i];
+                tab.GetSection(i).timeSignatureUpper = tabData.timeSignatureUppers[i];
+                tab.GetSection(i).timeSignatureLower = tabData.timeSignatureLowers[i];
+                tab.SetSectionAnnotation(i, tabData.annotataions[i]);
             }
 
             foreach (NoteData noteData in tabData.notes)
@@ -493,7 +517,7 @@ public class TabMaker : MonoBehaviour
 
             if (sectionIndex + 1 > tab.GetSectionTotal())
             {
-                tab.AddSection(bpm, 8, 4, 4);
+                tab.AddSection(bpm, currentDivision, timeSignatureUpper, timeSignatureLower);
             }
         }
 
@@ -539,6 +563,7 @@ public class TabMaker : MonoBehaviour
         if (tab != null && int.TryParse(tsu, out result))
         {
             tab.GetSection(sectionIndex).timeSignatureUpper = result;
+            timeSignatureUpper = result;
         }
     }
 
@@ -548,7 +573,13 @@ public class TabMaker : MonoBehaviour
         if (tab != null && int.TryParse(tsl, out result))
         {
             tab.GetSection(sectionIndex).timeSignatureLower = result;
+            timeSignatureLower = result;
         }
+    }
+
+    public void SetAnnotation(string annotation)
+    {
+        tab.SetSectionAnnotation(sectionIndex, annotation);
     }
 
     public void SetNote()
