@@ -211,7 +211,7 @@ public class Tab : MonoBehaviour
         return sections.Count;
     }
 
-    public void AddSection(int bpm, int division, int timeSignatureLower, int timeSignatureUpper)
+    public void AddSection(int bpm, int division, int timeSignatureUpper, int timeSignatureLower)
     {
         Section sectionComp = Instantiate(section).GetComponent<Section>();
         sectionComp.division = division;

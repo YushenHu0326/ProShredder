@@ -122,6 +122,10 @@ public class TabMaker : MonoBehaviour
         totalString = 5;
         SetStrings();
 
+        currentDivision = 8;
+        timeSignatureUpper = 4;
+        timeSignatureLower = 4;
+
         if (mainSection != null)
         {
             RectTransform rect = mainSection.GetComponent<RectTransform>();
